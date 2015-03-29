@@ -18,22 +18,31 @@ public partial class MainWindow: Gtk.Window
 	{
 		Build();
 
-		Fixed fixedLayout = new Fixed();
-		Add (fixedLayout);
+		VBox verticalBox = new VBox (false, 5);
+		Add (verticalBox);
+
+		HBox graphBox = new HBox ();
+		verticalBox.PackStart(graphBox, true, true, 5);
 
 		m_PlotView = new PlotView ();
 		m_PlotView.Name = "pvMain";
 		m_PlotView.SetSizeRequest(400, 300);
 
+
 		string audioFileName = @"/FileSync/Source/Other/SidWatch/pyPSD/data/20141014_150150_042628.txt";
 		List<AudioReading> audioReadings = FileHelper.ReadAudioFile(audioFileName);
+
+		m_PlotView.Model = PlotModelHelper.GetSoundDiagramGraph(audioReadings);
 
 		string psdFileName = @"/FileSync/Source/Other/SidWatch/pyPSD/data/output.txt";
 		List<PowerDensityReading> psdReadings = FileHelper.ReadPSDFile(psdFileName);
 
-		m_PlotView.Model = PlotModelHelper.GetPowerSpectrumDensityGraph(psdReadings);
+		//m_PlotView.Model = PlotModelHelper.GetPowerSpectrumDensityGraph(psdReadings);
 
-		fixedLayout.Put(m_PlotView, 10, 10);
+		graphBox.PackStart(m_PlotView, true, true, 5);
+
+		HBox buttonBox = new HBox ();
+		verticalBox.PackEnd(buttonBox, false, false, 5);
 
 		m_Record = new Button();
 		m_Record.Name = "btnRecord";
@@ -41,13 +50,17 @@ public partial class MainWindow: Gtk.Window
 		m_Record.SetSizeRequest (100, 20);
 		m_Record.Label = "Record";
 		m_Record.TooltipText = "Record one second of audio";
-		fixedLayout.Put (m_Record, 10, 320);
+		buttonBox.PackEnd (m_Record, false, false, 5);
 
 		ShowAll ();
 	}
 
 	private void Record(object sender, EventArgs e)
 	{
+		AudioHelper.RecordAudio(1000, CompletedRecording);
+	}
+
+	private void CompletedRecording(List<AudioReading> _readings) {
 		
 	}
 

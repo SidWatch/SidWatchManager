@@ -35,6 +35,9 @@
     <Reference Include="OxyPlot.GtkSharp">
       <HintPath>..\SidWatchManager\packages\OxyPlot.GtkSharp.2014.1.546\lib\net40\OxyPlot.GtkSharp.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio">
+      <HintPath>..\SidWatchManager\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -42,13 +45,27 @@
     <Compile Include="Objects\AudioReading.cs" />
     <Compile Include="Objects\PowerDensityReading.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Helpers\AudioHelper.cs" />
+    <Compile Include="Workers\AudioRecorderWorker.cs" />
+    <Compile Include="Delegates\CompletedRecording.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Objects\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Workers\" />
+    <Folder Include="Delegates\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

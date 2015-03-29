@@ -20,4 +20,10 @@ Global
 		{F6CD3BF4-B0B8-4E06-ADDD-56228A2353F2}.Release|x86.ActiveCfg = Release|x86
 		{F6CD3BF4-B0B8-4E06-ADDD-56228A2353F2}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = Hierarchical
+		$1.ResourceNamePolicy = FileFormatDefault
+	EndGlobalSection
 EndGlobal

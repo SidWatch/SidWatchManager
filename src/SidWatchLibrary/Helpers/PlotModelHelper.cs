@@ -21,6 +21,7 @@ namespace SidWatchLibrary.Helpers
 
 			var lineSeries = new LineSeries ();
 			lineSeries.ItemsSource = points;
+			lineSeries.Decimator = Decimator.Decimate;
 
 			model.Series.Add (lineSeries);
 
