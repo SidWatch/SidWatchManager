@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidWatchManager", "SidWatchManager.csproj", "{F6CD3BF4-B0B8-4E06-ADDD-56228A2353F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidWatchLibrary", "..\SidWatchLibrary\SidWatchLibrary.csproj", "{7753719B-2232-418A-A624-71347ADE9BE0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7753719B-2232-418A-A624-71347ADE9BE0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7753719B-2232-418A-A624-71347ADE9BE0}.Debug|x86.Build.0 = Debug|Any CPU
+		{7753719B-2232-418A-A624-71347ADE9BE0}.Release|x86.ActiveCfg = Release|Any CPU
+		{7753719B-2232-418A-A624-71347ADE9BE0}.Release|x86.Build.0 = Release|Any CPU
+		{F6CD3BF4-B0B8-4E06-ADDD-56228A2353F2}.Debug|x86.ActiveCfg = Debug|x86
+		{F6CD3BF4-B0B8-4E06-ADDD-56228A2353F2}.Debug|x86.Build.0 = Debug|x86
+		{F6CD3BF4-B0B8-4E06-ADDD-56228A2353F2}.Release|x86.ActiveCfg = Release|x86
+		{F6CD3BF4-B0B8-4E06-ADDD-56228A2353F2}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+EndGlobal
