@@ -60,7 +60,7 @@ public partial class MainWindow: Gtk.Window
 		AudioHelper.RecordAudio(1000, CompletedRecording);
 	}
 
-	private void CompletedRecording(List<AudioReading> _readings) {
+	private void CompletedWorke(List<AudioReading> _readings) {
 		
 	}
 

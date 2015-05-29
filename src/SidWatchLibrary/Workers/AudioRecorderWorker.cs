@@ -6,23 +6,24 @@ using System.IO;
 
 namespace SidWatchLibrary.Workers
 {
-	public class AudioRecorderWorker : IDisposable 
+	public class AudioRecorderWorker : AbstractWorker 
 	{
 		private WaveInEvent m_WaveIn;
 		private WaveFileWriter m_WaveWriter;
 		private MemoryStream m_MemStream;
 
-		public AudioRecorderWorker()
+		public AudioRecorderWorker(CompletedRecording _complete)
 		{
 			SamplesPerSecond = 96000;
 			RecordForTicks = 1000;
+			CompletedRecording = _complete;
 		}
 		
-		public CompletedRecording Complete { get; set;}
 		public int RecordForTicks { get; set;}
 		public int SamplesPerSecond {get;set;}
+		public CompletedRecording CompletedRecording { get; private set; }
 
-		public void Record()
+		public override void DoWork()
 		{
 			m_WaveIn = new WaveInEvent();
 			m_WaveIn.WaveFormat = new WaveFormat(96000, 1);
@@ -48,12 +49,10 @@ namespace SidWatchLibrary.Workers
 		{
 			byte[] data = m_MemStream.ToArray();
 
-			if (Complete != null) {
-				Complete (null);
-			}
+			FireComplete ();
 		}
 
-		public void Dispose ()
+		public override void Dispose ()
 		{
 			if (m_WaveIn != null) {
 				m_WaveIn.Dispose ();

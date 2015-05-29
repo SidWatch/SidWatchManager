@@ -5,6 +5,6 @@ using SidWatchLibrary.Interfaces;
 
 namespace SidWatchLibrary.Delegates
 {
-	public delegate void CompletedRecording(List<AudioReading> _readings);
+	public delegate void CompletedWork(IWorker _worker);
 }
 

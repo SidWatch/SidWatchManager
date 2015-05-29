@@ -1,4 +1,5 @@
 ﻿using SidWatchLibrary.Delegates;
+using SidWatchLibrary.Interfaces;
 using SidWatchLibrary.Workers;
 using System.Threading;
 
@@ -10,13 +11,21 @@ namespace SidWatchLibrary.Helpers
 	{
 		public static void RecordAudio(int _durationTicks, CompletedRecording _complete)
 		{
-			AudioRecorderWorker worker = new AudioRecorderWorker ();
+			AudioRecorderWorker worker = new AudioRecorderWorker (_complete);
 			worker.RecordForTicks = _durationTicks;
-			worker.Complete = _complete;
+			worker.CompletedWork = CompletedWork;
 
-			ThreadStart ts = new ThreadStart (worker.Record);
-			Thread t = new Thread (ts);
-			t.Start ();
+			worker.Start ();
+		}
+
+		public void CompletedWork(IWorker _worker)
+		{
+			if (IWorker is AudioRecorderWorker) {
+				AudioRecorderWorker worker = (AudioRecorderWorker)_worker;
+
+				List<AudioReading> readings = worker.
+			
+			}
 		}
 	}
 }
