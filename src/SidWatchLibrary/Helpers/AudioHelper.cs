@@ -20,9 +20,9 @@ namespace SidWatchLibrary.Helpers
 			worker.Start ();
 		}
 
-		public void CompletedWork(IWorker _worker)
+		private static void CompletedWork(IWorker _worker)
 		{
-			if (IWorker is AudioRecorderWorker) {
+			if (_worker is AudioRecorderWorker) {
 				AudioRecorderWorker worker = (AudioRecorderWorker)_worker;
 
 				List<AudioReading> readings = worker.Readings;
@@ -31,6 +31,38 @@ namespace SidWatchLibrary.Helpers
 					worker.CompletedRecording (readings);
 				}
 			}
+		}
+
+		public static double[] GetSignal(List<AudioReading> _readings)
+		{
+			int length = _readings.Count;
+
+			double[] output = new double[length];
+
+			int pos = 0;
+
+			foreach (AudioReading reading in _readings) {
+				output [pos] = reading.Value;
+				pos++;
+			}
+
+			return output;
+		}
+
+		public static double[] GetPower(List<PowerDensityReading> _readings)
+		{
+			int length = _readings.Count;
+
+			double[] output = new double[length];
+
+			int pos = 0;
+
+			foreach (PowerDensityReading reading in _readings) {
+				output [pos] = reading.Value;
+				pos++;
+			}
+
+			return output;
 		}
 	}
 }

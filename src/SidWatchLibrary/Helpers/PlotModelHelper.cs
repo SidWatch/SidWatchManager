@@ -61,6 +61,50 @@ namespace SidWatchLibrary.Helpers
 
 			return model;
 		}
+
+		public static PlotModel GetComparisonGraph(double[] _values1, double[] _values2)
+		{
+			var model = new PlotModel { Title = "Delta" };
+
+			List<DataPoint> points1 = new List<DataPoint> ();
+			for (int i = 0; i < _values1.Length; i++) {
+				DataPoint dp = new DataPoint (i, _values1[i]);
+				points1.Add(dp);
+			}
+
+			var lineSeries1 = new LineSeries ();
+			lineSeries1.ItemsSource = points1;
+
+			List<DataPoint> points2 = new List<DataPoint> ();
+			for (int i = 0; i < _values2.Length; i++) {
+				DataPoint dp = new DataPoint (i, _values2[i]);
+				points2.Add(dp);
+			}
+
+			var lineSeries2 = new LineSeries ();
+			lineSeries2.ItemsSource = points2;
+
+			model.Series.Add(lineSeries1);
+			model.Series.Add(lineSeries2);
+
+			LogarithmicAxis yAxis = new LogarithmicAxis();
+			//LinearAxis yAxis = new LinearAxis();
+			yAxis.Position = AxisPosition.Left;
+			yAxis.Maximum = 3000;
+			yAxis.Minimum = 0;
+			yAxis.Title = "Difference";
+
+			model.Axes.Add (yAxis);
+
+			LinearAxis xAxis = new LinearAxis ();
+			xAxis.Position = AxisPosition.Bottom;
+			xAxis.Minimum = 0;
+			xAxis.Maximum = 512;
+			xAxis.Title = "Frequency Bin";
+			model.Axes.Add (xAxis);
+
+			return model;
+		}
 	}
 }
 

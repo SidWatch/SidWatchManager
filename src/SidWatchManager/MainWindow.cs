@@ -8,6 +8,8 @@ using OxyPlot.Series;
 using SidWatchLibrary.Helpers;
 using SidWatchLibrary.Objects;
 using System.Collections.Generic;
+using SidWatchLibrary.Math;
+
 
 public partial class MainWindow: Gtk.Window
 {
@@ -28,16 +30,29 @@ public partial class MainWindow: Gtk.Window
 		m_PlotView.Name = "pvMain";
 		m_PlotView.SetSizeRequest(400, 300);
 
-
 		string audioFileName = @"/FileSync/Source/Other/SidWatch/pyPSD/data/20141014_150150_042628.txt";
 		List<AudioReading> audioReadings = FileHelper.ReadAudioFile(audioFileName);
+		//m_PlotView.Model = PlotModelHelper.GetSoundDiagramGraph(audioReadings);
 
-		m_PlotView.Model = PlotModelHelper.GetSoundDiagramGraph(audioReadings);
+		double[] readingData = AudioHelper.GetSignal (audioReadings);
+		List<PowerDensityReading> psd = Signal.CalculatePowerSpectralDensity2 (readingData);
+		//		m_PlotView.Model = PlotModelHelper.GetPowerSpectrumDensityGraph(psd);
 
 		string psdFileName = @"/FileSync/Source/Other/SidWatch/pyPSD/data/output.txt";
-		List<PowerDensityReading> psdReadings = FileHelper.ReadPSDFile(psdFileName);
+		List<PowerDensityReading> psd2 = FileHelper.ReadPSDFile(psdFileName);
 
-		//m_PlotView.Model = PlotModelHelper.GetPowerSpectrumDensityGraph(psdReadings);
+		double[] psdData = AudioHelper.GetPower (psd);
+		double[] psdData2 = AudioHelper.GetPower (psd2);
+		double[] difference = new double[psdData.Length];
+
+		for (int i = 0; i < psdData.Length; i++) {
+			double a = psdData [i];
+			double b = psdData2 [i];
+
+			difference [i] = a/b;
+		}
+
+		m_PlotView.Model = PlotModelHelper.GetComparisonGraph (psdData, psdData2);
 
 		graphBox.PackStart(m_PlotView, true, true, 5);
 
@@ -60,8 +75,8 @@ public partial class MainWindow: Gtk.Window
 		AudioHelper.RecordAudio(1000, CompletedRecording);
 	}
 
-	private void CompletedWorke(List<AudioReading> _readings) {
-		
+	private void CompletedRecording(List<AudioReading> _readings) {
+
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
