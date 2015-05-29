@@ -114,6 +114,15 @@ namespace SidWatchLibrary.Helpers
 			}
 			return _input;
 		}
+
+		public static double[] Subset(this double[] _input, int _start, int _width)
+		{
+			double[] output = new double[_width];
+
+			Array.Copy (_input, _start, output, 0, _width);
+
+			return output;
+		}
 	}
 }
 
