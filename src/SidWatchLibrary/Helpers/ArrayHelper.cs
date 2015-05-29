@@ -60,6 +60,37 @@ namespace SidWatchLibrary.Helpers
 			return sum / length;
 		}
 
+		public static double Maximum(this double[] _input)
+		{
+			int length = _input.Length;
+
+			double max = _input [0];
+
+			for (int i = 1; i < length; i++) {
+				if (_input [i] > max) {
+					max = _input [i];
+				}
+			}
+
+			return max;
+		}
+
+		public static double Minimum(this double[] _input)
+		{
+			int length = _input.Length;
+
+			double min = _input [0];
+
+			for (int i = 1; i < length; i++) {
+				if (_input [i] < min) {
+					min = _input [i];
+				}
+			}
+
+			return min;
+		}
+
+
 		public static double Sum(this double[] _input)
 		{
 			int length = _input.Length;

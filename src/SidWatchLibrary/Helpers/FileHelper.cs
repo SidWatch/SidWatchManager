@@ -68,7 +68,7 @@ namespace SidWatchLibrary.Helpers
 			foreach (var line in lines) {
 				PowerDensityReading reading = new PowerDensityReading();
 
-				string[] items = line.Split ("|".ToCharArray());
+				string[] items = line.Split ("|\t".ToCharArray());
 
 				double time;
 				double value;

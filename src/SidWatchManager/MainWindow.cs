@@ -30,15 +30,16 @@ public partial class MainWindow: Gtk.Window
 		m_PlotView.Name = "pvMain";
 		m_PlotView.SetSizeRequest(400, 300);
 
-		string audioFileName = @"/FileSync/Source/Other/SidWatch/pyPSD/data/20141014_150150_042628.txt";
+		string audioFileName = @"../../../TestData/20141014_150150_042628.txt";
 		List<AudioReading> audioReadings = FileHelper.ReadAudioFile(audioFileName);
 		//m_PlotView.Model = PlotModelHelper.GetSoundDiagramGraph(audioReadings);
 
 		double[] readingData = AudioHelper.GetSignal (audioReadings);
-		List<PowerDensityReading> psd = Signal.CalculatePowerSpectralDensity2 (readingData);
+		List<PowerDensityReading> psd = Signal.CalculatePowerSpectralDensity (readingData);
+		FileHelper.WritePSDFile (@"../../../TestData/DotNetPSDOutput.txt", psd);
 		//		m_PlotView.Model = PlotModelHelper.GetPowerSpectrumDensityGraph(psd);
 
-		string psdFileName = @"/FileSync/Source/Other/SidWatch/pyPSD/data/output.txt";
+		string psdFileName = @"../../../TestData/PythonPSDOutput.txt";
 		List<PowerDensityReading> psd2 = FileHelper.ReadPSDFile(psdFileName);
 
 		double[] psdData = AudioHelper.GetPower (psd);
@@ -49,10 +50,10 @@ public partial class MainWindow: Gtk.Window
 			double a = psdData [i];
 			double b = psdData2 [i];
 
-			difference [i] = a/b;
+			difference [i] = a - b;
 		}
 
-		m_PlotView.Model = PlotModelHelper.GetComparisonGraph (psdData, psdData2);
+		m_PlotView.Model = PlotModelHelper.GetGraph (difference);
 
 		graphBox.PackStart(m_PlotView, true, true, 5);
 

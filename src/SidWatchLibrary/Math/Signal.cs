@@ -9,35 +9,15 @@ namespace SidWatchLibrary.Math
 {
 	public static class Signal
 	{
-//		public static List<PowerDensityReading> FFT(double[] _signalData)
-//		{
-//			int length = _signalData.Length;
-//			int halfLength = length / 2;
-//
-//			Complex[] input = MathHelper.FromDoubleArray (_signalData);
-//
-//			Fourier.Forward (input);
-//
-//			List<PowerDensityReading> readings = new List<PowerDensityReading> ();
-//
-//			for (int i = 0; i < halfLength; i++) {
-//				double frequency = i * halfLength / 
-//			}
-//
-//		}
-
-		public static double[] GetWelchWindow(int binSize)
-		{
-			double[] window = new double[binSize];
-
-			for (int i = 0; i < binSize; i++) {
-				window [i] = 1.0 - System.Math.Pow((i - 0.5 * binSize) / (0.5 * binSize),2) ;
-			}
-
-			return window;
-		}
-
-		public static List<PowerDensityReading> CalculatePowerSpectralDensity2(
+		/// <summary>
+		/// Calculates the power spectral density.  Note that this has been tested against SuperSid's output for the specific
+		/// need and may not work generally.
+		/// </summary>
+		/// <returns>The power spectral density.</returns>
+		/// <param name="_signalData">Signal data.</param>
+		/// <param name="_samplingFrequency">Sampling frequency.</param>
+		/// <param name="_nfft">Nfft.</param>
+		public static List<PowerDensityReading> CalculatePowerSpectralDensity(
 			double[] _signalData, 
 			int _samplingFrequency = 96000,
 			int _nfft = 1024)
@@ -48,6 +28,7 @@ namespace SidWatchLibrary.Math
 			int elements = (_nfft / 2) + 1;
 			int firstElement = 0;
 			int lastElement = elements - 1;
+			double nyquist = _samplingFrequency / 2;
 			int iterations = Convert.ToInt32(System.Math.Floor (sample / binSize)) - 1;
 
 			double[] window = MathNet.Numerics.Window.Hann(twoBin);
@@ -67,8 +48,6 @@ namespace SidWatchLibrary.Math
 				temp.Multiply (window);
 				temp = temp.ZeroPad (_nfft);
 
-				//alglib.complex[] fftResult;
-				//alglib.fftr1d (temp, out fftResult);
 				complexData = MathHelper.FromDoubleArray (temp);
 				Fourier.Forward (complexData, FourierOptions.NoScaling);
 
@@ -108,7 +87,7 @@ namespace SidWatchLibrary.Math
 
 			for (int i = 0; i < elements; i++) {
 				PowerDensityReading reading = new PowerDensityReading ();
-				reading.Frequency = i * _samplingFrequency / (_nfft / 2);
+				reading.Frequency = (i * nyquist) / (_nfft / 2);
 				reading.Value = Pxx [i];
 
 				output.Add (reading);
@@ -116,85 +95,6 @@ namespace SidWatchLibrary.Math
 
 			return output;
 		}
-
-		public static List<PowerDensityReading> CalculatePowerSpectralDensity(
-			double[] _signalData, 
-			int _samplingFrequency = 96000,
-			int _binSize = 1024)
-		{
-			//Break down into bins
-			int halfBin = _binSize / 2;
-			int twoBins = _binSize * 2;
-			//int fourBins = _binSize * 4;
-			int totalSamples = _signalData.Length;
-			double iterationsRequired = Convert.ToDouble(totalSamples) / Convert.ToDouble(halfBin);
-			int totalBins = (int)System.Math.Floor(iterationsRequired);
-
-			//double[] window = GetWelchWindow(_binSize);
-			double[] window = MathNet.Numerics.Window.Hann(_binSize);
-			double sumWindow = 0.0;
-			for (int i = 0; i < _binSize; i++) {
-				sumWindow += window [i] * window[i];
-			}
-
-			double[] powerDensity = new double[halfBin];
-
-			int arrayPosition;
-			double[] binData;
-			double[] windowedBinData;
-			Complex[] complexData;
-
-			for (int i = 0; i < totalBins-1; i++) {
-				arrayPosition = i * halfBin;
-
-				binData = new double[_binSize];
-				MathHelper.ExtractSubset (_signalData, arrayPosition, _binSize);
-
-				windowedBinData = MathHelper.ApplyWindow (binData, window);
-
-				complexData = MathHelper.FromDoubleArray (windowedBinData);
-
-				Fourier.Forward (complexData,FourierOptions.NoScaling);
-
-				for (int j = 0; j < halfBin; j++) {
-					powerDensity [j] += complexData [j].Magnitude;
-				}
-			}
-
-			//Process last partial bin with zero padding
-			arrayPosition = halfBin*(totalBins-1);
-			binData = new double[_binSize];
-			int remainingData = totalSamples - arrayPosition;
-			Array.Copy (_signalData, arrayPosition, binData, 0, remainingData);
-			windowedBinData = MathHelper.ApplyWindow (binData, window);
-
-			complexData = MathHelper.FromDoubleArray (windowedBinData);
-
-			Fourier.Forward (complexData);
-
-			for (int j = 0; j < halfBin; j++) {
-				powerDensity [j] += complexData [j].Magnitude;
-			}
-
-
-			List<PowerDensityReading> output = new List<PowerDensityReading> ();
-
-			for (int i = 0; i < halfBin; i++) {
-				PowerDensityReading reading = new PowerDensityReading ();
-				reading.Frequency = i * _samplingFrequency / _binSize;
-				//reading.Value = 20 * System.Math.Log10 (powerDensity [i] / (sumWindow));
-				reading.Value =  powerDensity [i] / (sumWindow * _binSize);
-
-				output.Add (reading);
-			}
-
-			return output;
-		}
-
-
-
-
-
 	}
 }
 
