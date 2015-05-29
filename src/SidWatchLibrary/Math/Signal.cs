@@ -52,22 +52,29 @@ namespace SidWatchLibrary.Math
 
 			double[] window = MathNet.Numerics.Window.Hann(twoBin);
 
-			double scale = 1.0 / System.Math.Pow(window.Sum (), 2.0);
+			double[] winSquared = MathNet.Numerics.Window.Hann (twoBin);
+			winSquared.Multiply (window);
+
+			double scale = 1.0 / (_samplingFrequency * winSquared.Sum());
 			double[] Pxx = new double[elements];
+			Complex[] complexData;
 
 			for (int k = 0; k < iterations; k++) {
 				int position = k * binSize;
 
 				double[] temp = MathHelper.ExtractSubset (_signalData, position, twoBin);
 				temp.Subtract (temp.Mean ());
+				temp.Multiply (window);
 				temp = temp.ZeroPad (_nfft);
 
-				alglib.complex[] fftResult;
-				alglib.fftr1d (temp, out fftResult);
+				//alglib.complex[] fftResult;
+				//alglib.fftr1d (temp, out fftResult);
+				complexData = MathHelper.FromDoubleArray (temp);
+				Fourier.Forward (complexData, FourierOptions.NoScaling);
 
 				if (k == 0) {
 					for (int j = 0; j < elements; j++) {
-						Pxx [j] = System.Math.Pow(fftResult [j].x, 2);
+						Pxx [j] = System.Math.Pow(complexData [j].Real, 2);
 					}
 				} else {
 					double factor = k / (k + 1.0);
@@ -76,12 +83,12 @@ namespace SidWatchLibrary.Math
 					for (int j = 0; j < elements; j++) {
 						if (j == firstElement
 						    || j == lastElement) {
-							double value = System.Math.Pow(fftResult [j].x, 2) / (k + 1);
+							double value = System.Math.Pow(complexData [j].Real, 2) / (k + 1);
 
 							Pxx [j] += value;
 						} else {
-							double value = (System.Math.Pow(fftResult [j].x, 2) + 
-								System.Math.Pow(fftResult [j].y, 2)) / (k + 1);
+							double value = (System.Math.Pow(complexData [j].Real, 2) + 
+								System.Math.Pow(complexData [j].Imaginary, 2)) / (k + 1);
 							Pxx [j] += value;
 						}
 					}

@@ -31,6 +31,17 @@ namespace SidWatchLibrary.Helpers
 			}
 		}
 
+		public static void Multiply(this double[] _input, double[] _values)
+		{
+			int length = _input.Length;
+
+			if (length == _values.Length) {
+				for (int i = 0; i < length; i++) {
+					_input [i] *= _values[i];
+				}
+			}
+		}
+
 		public static void Divide(this double[] _input, double _value)
 		{
 			int length = _input.Length;
