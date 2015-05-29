@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using SidWatchLibrary.Objects;
 using SidWatchLibrary.Delegates;
 using NAudio.Wave;
 using System.Threading;
@@ -22,6 +24,7 @@ namespace SidWatchLibrary.Workers
 		public int RecordForTicks { get; set;}
 		public int SamplesPerSecond {get;set;}
 		public CompletedRecording CompletedRecording { get; private set; }
+		public List<AudioReading> Readings { get; set; }
 
 		public override void DoWork()
 		{
@@ -48,6 +51,8 @@ namespace SidWatchLibrary.Workers
 		private void RecordingStopped(object sender, StoppedEventArgs e)
 		{
 			byte[] data = m_MemStream.ToArray();
+
+			//TODO - convert to List<AudioReading>
 
 			FireComplete ();
 		}

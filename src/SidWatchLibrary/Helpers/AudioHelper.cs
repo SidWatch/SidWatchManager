@@ -1,6 +1,8 @@
 ﻿using SidWatchLibrary.Delegates;
 using SidWatchLibrary.Interfaces;
 using SidWatchLibrary.Workers;
+using SidWatchLibrary.Objects;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace SidWatchLibrary.Helpers
@@ -23,8 +25,11 @@ namespace SidWatchLibrary.Helpers
 			if (IWorker is AudioRecorderWorker) {
 				AudioRecorderWorker worker = (AudioRecorderWorker)_worker;
 
-				List<AudioReading> readings = worker.
+				List<AudioReading> readings = worker.Readings;
 			
+				if (worker.CompletedRecording != null) {
+					worker.CompletedRecording (readings);
+				}
 			}
 		}
 	}
