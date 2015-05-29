@@ -52,48 +52,6 @@
     <Compile Include="Helpers\AudioHelper.cs" />
     <Compile Include="Workers\AudioRecorderWorker.cs" />
     <Compile Include="Delegates\CompletedRecording.cs" />
-    <Compile Include="..\AlgLibCsharp\src\alglib_info.cs">
-      <Link>AlgLib\alglib_info.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\alglibinternal.cs">
-      <Link>AlgLib\alglibinternal.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\alglibmisc.cs">
-      <Link>AlgLib\alglibmisc.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\ap.cs">
-      <Link>AlgLib\ap.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\dataanalysis.cs">
-      <Link>AlgLib\dataanalysis.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\diffequations.cs">
-      <Link>AlgLib\diffequations.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\fasttransforms.cs">
-      <Link>AlgLib\fasttransforms.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\integration.cs">
-      <Link>AlgLib\integration.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\interpolation.cs">
-      <Link>AlgLib\interpolation.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\linalg.cs">
-      <Link>AlgLib\linalg.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\optimization.cs">
-      <Link>AlgLib\optimization.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\solvers.cs">
-      <Link>AlgLib\solvers.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\specialfunctions.cs">
-      <Link>AlgLib\specialfunctions.cs</Link>
-    </Compile>
-    <Compile Include="..\AlgLibCsharp\src\statistics.cs">
-      <Link>AlgLib\statistics.cs</Link>
-    </Compile>
     <Compile Include="Workers\PSDWorker.cs" />
     <Compile Include="Workers\AbstractWorker.cs" />
     <Compile Include="Interfaces\IWorker.cs" />
@@ -110,7 +68,6 @@
     <Folder Include="Helpers\" />
     <Folder Include="Workers\" />
     <Folder Include="Delegates\" />
-    <Folder Include="AlgLib\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Math\" />
   </ItemGroup>
