@@ -53,7 +53,8 @@ public partial class MainWindow: Gtk.Window
 			difference [i] = a - b;
 		}
 
-		m_PlotView.Model = PlotModelHelper.GetGraph (difference);
+		m_PlotView.Model = PlotModelHelper.GetPowerSpectrumDensityGraph (psd2);
+		//m_PlotView.Model = PlotModelHelper.GetGraph (difference);
 
 		graphBox.PackStart(m_PlotView, true, true, 5);
 

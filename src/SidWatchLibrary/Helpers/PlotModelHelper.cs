@@ -41,12 +41,13 @@ namespace SidWatchLibrary.Helpers
 
 			var lineSeries = new LineSeries ();
 			lineSeries.ItemsSource = points;
+			lineSeries.Smooth = false;
 				
 			model.Series.Add(lineSeries);
 
 			LogarithmicAxis yAxis = new LogarithmicAxis ();
 			yAxis.Position = AxisPosition.Left;
-			yAxis.Maximum = 100000;
+			yAxis.Maximum = 10000;
 			yAxis.Minimum = 0;
 			yAxis.Title = "Power";
 
@@ -65,7 +66,7 @@ namespace SidWatchLibrary.Helpers
 		public static PlotModel GetGraph(double[] _values1, 
 			string _title = "Graph", string _xTitle = "X", string _yTitle = "Y")
 		{
-			var model = new PlotModel { Title = "Delta" };
+			var model = new PlotModel { Title = _title };
 
 			List<DataPoint> points1 = new List<DataPoint> ();
 			for (int i = 0; i < _values1.Length; i++) {
@@ -83,14 +84,14 @@ namespace SidWatchLibrary.Helpers
 			yAxis.Position = AxisPosition.Left;
 			yAxis.Maximum = _values1.Maximum();
 			yAxis.Minimum = _values1.Minimum();
-			yAxis.Title = "Difference";
+			yAxis.Title = _yTitle;
 			model.Axes.Add (yAxis);
 
 			LinearAxis xAxis = new LinearAxis ();
 			xAxis.Position = AxisPosition.Bottom;
 			xAxis.Minimum = 0;
 			xAxis.Maximum = 512;
-			xAxis.Title = "Frequency Bin";
+			xAxis.Title = _xTitle;
 			model.Axes.Add (xAxis);
 
 			return model;
