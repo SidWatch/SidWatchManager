@@ -119,7 +119,14 @@ namespace SidWatchLibrary.Helpers
 		{
 			double[] output = new double[_width];
 
-			Array.Copy (_input, _start, output, 0, _width);
+			int width = _width;
+			int length = _input.Length;
+
+			if (_start + _width > length) {
+				width = length - _start;
+			}
+
+			Array.Copy (_input, _start, output, 0, width);
 
 			return output;
 		}

@@ -35,21 +35,30 @@ namespace SidWatchLibrary.Helpers
 
 			List<DataPoint> points = new List<DataPoint> ();
 			foreach (var item in _readings) {
-				DataPoint dp = new DataPoint (item.Frequency, item.Value);
+				DataPoint dp = new DataPoint (item.Frequency, item.dBValue);
 				points.Add (dp);
 			}
 
 			var lineSeries = new LineSeries ();
 			lineSeries.ItemsSource = points;
-			lineSeries.Smooth = false;
-				
 			model.Series.Add(lineSeries);
 
-			LogarithmicAxis yAxis = new LogarithmicAxis ();
+//			List<ScatterPoint> points = new List<ScatterPoint>();
+//			foreach (var item in _readings) {
+//				ScatterPoint sp = new ScatterPoint (item.Frequency, item.dBValue, 1);
+//				points.Add (sp);
+//			}
+//
+//			var scatterSeries = new ScatterSeries ();
+//			scatterSeries.ItemsSource = points;
+//
+//			model.Series.Add(scatterSeries);
+
+			LinearAxis yAxis = new LinearAxis ();
 			yAxis.Position = AxisPosition.Left;
-			yAxis.Maximum = 10000;
+			yAxis.Maximum = 40;
 			yAxis.Minimum = 0;
-			yAxis.Title = "Power";
+			yAxis.Title = "Power (dB)";
 
 			model.Axes.Add (yAxis);
 
@@ -57,7 +66,7 @@ namespace SidWatchLibrary.Helpers
 			xAxis.Position = AxisPosition.Bottom;
 			xAxis.Minimum = 0;
 			xAxis.Maximum = 48000;
-			xAxis.Title = "Frequency (Htz)";
+			xAxis.Title = "Frequency (Hz)";
 			model.Axes.Add (xAxis);
 
 			return model;

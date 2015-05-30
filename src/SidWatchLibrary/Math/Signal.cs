@@ -23,14 +23,14 @@ namespace SidWatchLibrary.Math
 			int _samplingFrequency = 96000,
 			int _nfft = 1024)
 		{
-			double samples = Convert.ToDouble (_samplingFrequency); // Double representation of sampling frequency
-			int binSize = 128; //Number of samples in bin
+			double samples = Convert.ToDouble (_signalData.Length); // Double representation of sampling frequency
+			int binSize = 512; //Number of samples in bin
 			int twoBin = binSize * 2; //Number of samples with overlapping
 			int elements = (_nfft / 2) + 1; //Number of output elements
 			int firstElement = 0; //Id of the first output element
 			int lastElement = elements - 1; //Id of last output element
 			double nyquist = _samplingFrequency / 2;  // The maximum frequency that can be output
-			int iterations = Convert.ToInt32(System.Math.Floor (samples / binSize)) - 1; //Number of loops through processign required
+			int iterations = Convert.ToInt32(System.Math.Floor (samples / binSize)); //Number of loops through processign required
 
 			double[] window = MathNet.Numerics.Window.Hann(twoBin); //Generate a set of windows factors
 
@@ -80,8 +80,6 @@ namespace SidWatchLibrary.Math
 					}
 				}
 			}
-
-			//TODO - Handle any data that wasn't processed
 
 			for (int j = 0; j < elements; j++) {
 				if (j == firstElement
