@@ -9,16 +9,21 @@ using SidWatchLibrary.Helpers;
 using SidWatchLibrary.Objects;
 using System.Collections.Generic;
 using SidWatchLibrary.Math;
+using SidWatchLibrary.Workers;
 
 
 public partial class MainWindow: Gtk.Window
 {
 	private OxyPlot.GtkSharp.PlotView m_PlotView;
 	private Button m_Record;
+	private NancyWorker m_NancyWorker;
 
 	public MainWindow () : base (Gtk.WindowType.Toplevel)
 	{
 		Build();
+
+		m_NancyWorker = new NancyWorker ();
+		m_NancyWorker.Start ();
 
 		VBox verticalBox = new VBox (false, 5);
 		Add (verticalBox);
