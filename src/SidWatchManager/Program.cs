@@ -1,5 +1,4 @@
 ﻿using System;
-using Gtk;
 
 namespace SidWatchManager
 {
@@ -7,11 +6,11 @@ namespace SidWatchManager
 	{
 		public static void Main (string[] args)
 		{
-			Application.Init ();
-			MainWindow win = new MainWindow ();
+            //Application.Init ();
+            //MainWindow win = new MainWindow ();
 
-			win.Show ();
-			Application.Run ();
+            //win.Show ();
+            //Application.Run ();
 		}
 	}
 }

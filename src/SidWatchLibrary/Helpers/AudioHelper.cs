@@ -25,10 +25,11 @@ namespace SidWatchLibrary.Helpers
 			if (_worker is AudioRecorderWorker) {
 				AudioRecorderWorker worker = (AudioRecorderWorker)_worker;
 
-				List<AudioReading> readings = worker.Readings;
+				AudioSample sample = worker.Sample;
 			
-				if (worker.CompletedRecording != null) {
-					worker.CompletedRecording (readings);
+				if (worker.CompletedRecording != null)
+				{
+				    worker.CompletedRecording(sample);
 				}
 			}
 		}
