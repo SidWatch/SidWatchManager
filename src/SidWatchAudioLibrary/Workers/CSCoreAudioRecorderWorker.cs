@@ -1,34 +1,40 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using Accord.Audio;
-using Accord.DirectSound;
+using System.Threading;
+using CSCore;
+using CSCore.Codecs.WAV;
+using CSCore.CoreAudioAPI;
+using CSCore.SoundIn;
 using SidWatchLibrary.Delegates;
 using SidWatchLibrary.Objects;
 using TreeGecko.Library.Common.Helpers;
 
 namespace SidWatchAudioLibrary.Workers
 {
-	public class AccordAudioRecorderWorker : AbstractAudioRecorder
-	{
-	    private AudioCaptureDevice m_AudioSource;
+    public class CSCoreAudioRecorderWorker : AbstractAudioRecorder
+    {
+	    private WasapiCapture m_AudioSource;
 		private MemoryStream m_MemStream;
+        private WaveWriter m_WaveWriter;
+        private WaveFormat m_WaveFormat = new WaveFormat(96000, 24, 1);
 
-	    public AccordAudioRecorderWorker(CompletedRecording _complete)
+        public CSCoreAudioRecorderWorker(CompletedRecording _complete)
 		{
-            SamplesPerSecond = 48000;
+            SamplesPerSecond = 96000;
 			RecordForTicks = 1000;
 			CompletedRecording = _complete;
 
 	        string desiredAudioDevice = Config.GetSettingValue("AudioDeviceName");
 
-	        AudioDeviceInfo captureDeviceInfo = null;
-            var collection = new AudioDeviceCollection(AudioDeviceCategory.Capture);
+            MMDevice captureDeviceInfo = null;
+            var collection = EnumerateWasapiDevices();
 
 	        if (desiredAudioDevice != null)
 	        {	            
 	            foreach (var device in collection)
-	            {
-	                if (device.Description == desiredAudioDevice)
+                {
+	                if (device.FriendlyName == desiredAudioDevice)
 	                {
                         Console.WriteLine("Using specified device - {0}", device);
 	                    captureDeviceInfo = device;
@@ -37,24 +43,32 @@ namespace SidWatchAudioLibrary.Workers
 	            }
 	        }
 
-	        if (captureDeviceInfo == null)
-	        {
-	            captureDeviceInfo = collection.Default;
-	            Console.WriteLine("Using Default Capture Device- {0}", captureDeviceInfo);
-	        }
-
-	        m_AudioSource = new AudioCaptureDevice(captureDeviceInfo)
+            m_AudioSource = new WasapiCapture(
+                eventSync: false,
+                shareMode: AudioClientShareMode.Shared,
+                latency:100,
+                defaultFormat: m_WaveFormat);
+            if (captureDeviceInfo != null)
             {
-                DesiredFrameSize = 4096,
-                SampleRate = SamplesPerSecond,
-                Format = SampleFormat.Format32Bit
-            };
+                m_AudioSource.Device = captureDeviceInfo;
+            }
 
-            // Specify capturing options
-            m_AudioSource.NewFrame += NewAudioFrame;
-            m_AudioSource.AudioSourceError += AudioSourceError;
+            m_AudioSource.DataAvailable += DataAvailable;
+            m_AudioSource.Initialize();
 		}
-		
+
+        private void DataAvailable(object _sender, DataAvailableEventArgs _e)
+        {
+            m_WaveWriter.Write(_e.Data, _e.Offset, _e.ByteCount);
+        }
+
+        public IEnumerable<MMDevice> EnumerateWasapiDevices()
+        {
+            using (MMDeviceEnumerator enumerator = new MMDeviceEnumerator())
+            {
+                return enumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active);
+            }
+        }
 
 		public CompletedRecording CompletedRecording { get; private set; }
 
@@ -62,33 +76,22 @@ namespace SidWatchAudioLibrary.Workers
 	    {
             //Create local memory stream for this recording
 	        m_MemStream = new MemoryStream();
+	        m_WaveWriter = new WaveWriter(m_MemStream, m_AudioSource.WaveFormat);
 
             //Start recording
             m_AudioSource.Start();
 
             //Set the start time and end time
-	        StartTime = DateTime.Now;
+	        StartTime = DateTime.UtcNow;
 	        EndTime = StartTime.AddSeconds(1.1);
-	    }
 
-        private void AudioSourceError(object _sender, AudioSourceErrorEventArgs _e)
-        {
-            
-        }
+	        do
+	        {
+	            Thread.Sleep(10);
+	        } while (EndTime > DateTime.UtcNow);
 
-        private void NewAudioFrame(object _sender, NewFrameEventArgs _e)
-	    {
-            //Append data to the stream
-	        byte[] data = _e.Signal.RawData;
-	        m_MemStream.Write(data, 0, data.Length);
-
-            //Check if done
-            if (DateTime.Now > EndTime)
-            {
-                //stop if done
-                m_AudioSource.Stop();
-                Done();
-            }
+            m_AudioSource.Stop();
+            Done();
 	    }
 
 		private void Done()
@@ -97,7 +100,7 @@ namespace SidWatchAudioLibrary.Workers
             m_MemStream.Dispose();
 		    m_MemStream = null;
 
-		    int desiredBytes = Convert.ToInt32((RecordForTicks/1000)*96000);
+		    int desiredBytes = Convert.ToInt32((RecordForTicks/1000)*96000) * 4;
 
 		    byte[] output = new byte[desiredBytes];
 
@@ -138,10 +141,8 @@ namespace SidWatchAudioLibrary.Workers
 			}
 		}
 
-	    public override void EnumDevicesToConsole()
-	    {
-
-	    }
-	}
+        public override void EnumDevicesToConsole()
+        {
+        }
+    }
 }
-

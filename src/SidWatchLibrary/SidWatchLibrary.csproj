@@ -86,8 +86,6 @@
     <Compile Include="Objects\AudioReading.cs" />
     <Compile Include="Objects\PowerDensityReading.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
-    <Compile Include="Helpers\AudioHelper.cs" />
-    <Compile Include="Workers\AudioRecorderWorker.cs" />
     <Compile Include="Delegates\CompletedRecording.cs" />
     <Compile Include="Workers\PSDWorker.cs" />
     <Compile Include="Workers\AbstractWorker.cs" />
