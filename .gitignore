@@ -1,0 +1,9 @@
+src/ConsoleDataCollector/bin/
+src/ConsoleDataCollector/obj/
+src/SidWatchLibrary/bin/
+src/SidWatchLibrary/obj/
+src/SidWatchManager/bin/
+src/SidWatchManager/obj/
+src/SidWatchAudioLibrary/bin/
+src/SidWatchAudioLibrary/obj/
+src/SidWatchManager/packages/

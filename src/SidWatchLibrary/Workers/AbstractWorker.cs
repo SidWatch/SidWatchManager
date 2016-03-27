@@ -21,7 +21,7 @@ namespace SidWatchLibrary.Workers
 			return m_Thread;
 		}
 
-		public void FireComplete()
+		protected void FireComplete()
 		{
 			if (CompletedWork != null)
 			{
