@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NAudio.CoreAudioApi;
@@ -94,51 +95,53 @@ namespace SidWatchAudioLibrary.Workers
 
 		private void RecordingStopped(object sender, StoppedEventArgs e)
 		{
-			byte[] data = m_MemStream.ToArray();
-            m_MemStream.Dispose();
-		    m_MemStream = null;
+            Console.WriteLine("Received {0} bytes", m_MemStream.Length);
 
-		    Console.WriteLine("Received {0} bytes", data.Length);
+		    int desiredSamples = (RecordForTicks/1000)*SamplesPerSecond;
 
-		    int desiredBytes = Convert.ToInt32((RecordForTicks/1000)*SamplesPerSecond)*(BitsPerSample/8) + 44;
+		    List<Double> samples = new List<double>();
+		    m_MemStream.Position = 0;
+            WaveFileReader reader = new WaveFileReader(m_MemStream);
+		    int channels = reader.WaveFormat.Channels;
 
-		    byte[] output = new byte[desiredBytes];
+		    int frames = Convert.ToInt32(reader.SampleCount/channels);
 
+		    double minValue = double.MaxValue;
+		    double maxValue = double.MinValue;
 
-		    if (data.Length > desiredBytes)
-		    {
-		        Console.WriteLine("Copying desired bytes ({0})", desiredBytes);
-		        Array.Copy(data, 0, output, 0, desiredBytes);		   
-            }
-		    else
-		    {
-                Console.WriteLine("Less than desired bytes ({0})", output.Length);
-		        output = data;
-		    }
-
-            int countNonZero = 0;
-            for (int i = 45; i < output.Length; i++)
+            for (int i = 0; i < frames; i++)
             {
-                if (output[i] != 0)
+                float[] frame = reader.ReadNextSampleFrame();
+
+                double value = frame[0];
+                samples.Add(value);
+
+                if (minValue > value)
                 {
-                    countNonZero++;
+                    minValue = value;
+                }
+
+                if (maxValue < value)
+                {
+                    maxValue = value;
                 }
             }
 
-		    Console.WriteLine("Found {0} non-zero bytes", countNonZero);
+		    Console.WriteLine("Minimum Value Find - {0}", minValue);
+		    Console.WriteLine("Maximum Value Find - {0}", maxValue);
 
-		    Sample = new AudioSample
+		    Segment = new AudioSegment
 		    {
 		        StartTime = StartTime,
 		        SamplesPerSeconds = SamplesPerSecond,
-		        Data = output
+                Samples = samples
 		    };
 
 			FireComplete ();
 
 		    if (CompletedRecording != null)
 		    {
-		        CompletedRecording(Sample);
+		        CompletedRecording(Segment);
 		    }
 		}
 
@@ -169,4 +172,6 @@ namespace SidWatchAudioLibrary.Workers
 	    }
 	}
 }
+
+
 

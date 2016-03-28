@@ -128,6 +128,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factory\AudioRecorderFactory.cs" />
     <Compile Include="Helpers\AudioHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Workers\AbstractAudioRecorder.cs" />

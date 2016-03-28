@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SidWatchAudioLibrary.Workers
 {
-    interface IAudioRecorderWorker
+    public interface IAudioRecorderWorker
     {
     }
 }

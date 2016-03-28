@@ -15,8 +15,6 @@ namespace SidWatchAudioLibrary.Workers
 
 	    public AccordAudioRecorderWorker(CompletedRecording _complete)
 		{
-            SamplesPerSecond = 48000;
-			RecordForTicks = 1000;
 			CompletedRecording = _complete;
 
 	        string desiredAudioDevice = Config.GetSettingValue("AudioDeviceName");
@@ -110,18 +108,17 @@ namespace SidWatchAudioLibrary.Workers
 		        output = data;
 		    }
 
-		    Sample = new AudioSample
+		    Segment = new AudioSegment
 		    {
 		        StartTime = StartTime,
 		        SamplesPerSeconds = SamplesPerSecond,
-		        Data = output
 		    };
 
 			FireComplete ();
 
 		    if (CompletedRecording != null)
 		    {
-		        CompletedRecording(Sample);
+		        CompletedRecording(Segment);
 		    }
 		}
 

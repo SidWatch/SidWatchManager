@@ -2,6 +2,6 @@
 
 namespace SidWatchLibrary.Delegates
 {
-	public delegate void CompletedRecording(AudioSample sample);
+	public delegate void CompletedRecording(AudioSegment _segment);
 }
 
