@@ -6,7 +6,6 @@ using CSCore;
 using CSCore.Codecs.WAV;
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
-using NAudio.Wave;
 using SidWatchLibrary.Delegates;
 using SidWatchLibrary.Objects;
 using TreeGecko.Library.Common.Helpers;
@@ -20,14 +19,11 @@ namespace SidWatchAudioLibrary.Workers
 	    private WasapiCapture m_AudioSource;
 		private MemoryStream m_MemStream;
         private WaveWriter m_WaveWriter;
-        private bool m_Done;
-        private bool m_FirstData;
 
-        public CSCoreAudioRecorderWorker(CompletedRecording _complete)
+        public CSCoreAudioRecorderWorker(CompletedRecording _complete) 
+            : base(_complete)
 		{
-            CompletedRecording = _complete;
-
-            var waveFormat = new WaveFormat(SamplesPerSecond, BitsPerSample, 1);
+            var waveFormat = new WaveFormat(SamplesPerSecond, BitsPerSample, Channels);
 
 	        string desiredAudioDevice = Config.GetSettingValue("AudioDeviceName");
 
@@ -63,12 +59,11 @@ namespace SidWatchAudioLibrary.Workers
 
         private void DataAvailable(object _sender, DataAvailableEventArgs _e)
         {
-            if (m_FirstData)
+            if (FirstData)
             {
                 //Throwing away first chunk of data
-                StartTime = DateTime.UtcNow;
-                EndTime = StartTime.AddTicks(RecordForTicks);
-                m_FirstData = false;                
+                SetStartEnd();
+                FirstData = false;                
             }
             else
             {               
@@ -76,7 +71,7 @@ namespace SidWatchAudioLibrary.Workers
 
                 if (DateTime.UtcNow > EndTime)
                 {
-                    m_Done = true;
+                    DoneRecording = true;
                 }
             }
         }
@@ -88,9 +83,7 @@ namespace SidWatchAudioLibrary.Workers
                 return enumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active);
             }
         }
-
-		public CompletedRecording CompletedRecording { get; private set; }
-
+        
 	    public override void DoWork()
 	    {
             //Create local memory stream for this recording
@@ -104,12 +97,12 @@ namespace SidWatchAudioLibrary.Workers
 	        StartTime = DateTime.UtcNow;
 	        EndTime = StartTime.AddSeconds(1.1);
 
-	        m_Done = false;
-	        m_FirstData = true;
+            DoneRecording = false;
+	        FirstData = true;
 	        do
 	        {
 	            Thread.Sleep(10);
-	        } while (!m_Done);
+            } while (!DoneRecording);
 
             m_AudioSource.Stop();
             Done();
@@ -122,10 +115,7 @@ namespace SidWatchAudioLibrary.Workers
             WaveFileReader reader = new WaveFileReader(m_MemStream);
 		    int channels = reader.WaveFormat.Channels;
 
-            Console.WriteLine("Output - Samples Per Second - {0} ", reader.WaveFormat.SampleRate);
-            Console.WriteLine("       - Bits per Sample    - {0} ", reader.WaveFormat.BitsPerSample);
-            Console.WriteLine("       - Channels           - {0} ", channels);
-
+            LogFormat(reader.WaveFormat.SampleRate, reader.WaveFormat.BitsPerSample, reader.WaveFormat.Channels);
 
 		    var sampleSource = reader.ToSampleSource();
 		    var sampleAggregator = new SampleSourceBase(sampleSource);
@@ -133,17 +123,19 @@ namespace SidWatchAudioLibrary.Workers
 		    Single[] data = new Single[sampleAggregator.Length];
 		    sampleAggregator.Read(data, 0, data.Length);
 
-            List<Double> samples = new List<double>();
+            List<Double> channel1 = new List<double>();
+            List<Double> channel2 = new List<double>();
+
 		    int i = 0;
 		    do
 		    {
-                samples.Add(data[i]);
+                channel1.Add(data[i]);
 
 		        i++;
 
 		        if (channels > 1)
 		        {
-                    //Skip every other byte
+                    channel2.Add(data[i]);
 		            i++;
 		        }
 
@@ -151,17 +143,14 @@ namespace SidWatchAudioLibrary.Workers
             
 		    Segment = new AudioSegment
 		    {
+                Channels = channels,
 		        StartTime = StartTime,
 		        SamplesPerSeconds = SamplesPerSecond,
-                Samples = samples
+                Channel1 = channel1,
+                Channel2 = channel2
 		    };
 
-			FireComplete ();
-
-		    if (CompletedRecording != null)
-		    {
-		        CompletedRecording(Segment);
-		    }
+		    SendData(Segment);
 		}
 
 		public override void Dispose ()

@@ -17,15 +17,9 @@ namespace SidWatchAudioLibrary.Workers
 		private MemoryStream m_MemStream;
 
         public NAudioRecorderWorker(CompletedRecording _complete)
+            : base(_complete)
 		{
-			CompletedRecording = _complete;
-		}
-		
-		public CompletedRecording CompletedRecording { get; private set; }
-
-		public override void DoWork()
-		{
-            //Get the desired device
+             //Get the desired device
             string deviceName = Config.GetSettingValue("AudioDeviceName");
 
             //Get all devices
@@ -34,9 +28,9 @@ namespace SidWatchAudioLibrary.Workers
 		    int deviceId = 0;
 
             //Find right device
-		    if (devices.Count > 0)
-		    {
-		        bool foundDevice = false;
+            if (devices.Count > 0)
+            {
+                bool foundDevice = false;
                 for (int i = 0; i < WaveIn.DeviceCount; i++)
                 {
                     var device = devices[i];
@@ -50,99 +44,118 @@ namespace SidWatchAudioLibrary.Workers
                     }
                 }
 
-		        if (foundDevice)
-		        {
-		            Console.WriteLine("Using requested device");
-		        }
-		        else
-		        {
-		            Console.WriteLine("Using default device");
-		        }
+                if (foundDevice)
+                {
+                    Console.WriteLine("Using requested device");
+                }
+                else
+                {
+                    Console.WriteLine("Using default device");
+                }
 
                 m_WaveIn = new WaveInEvent
                 {
-                    WaveFormat = new WaveFormat(SamplesPerSecond, BitsPerSample, 1),
+                    WaveFormat = new WaveFormat(SamplesPerSecond, BitsPerSample, Channels),
                     BufferMilliseconds = 100,
                     DeviceNumber = deviceId
                 };
 
-		        var waveIn = (WaveInEvent) m_WaveIn;
-		        waveIn.DeviceNumber = deviceId;
+                var waveIn = (WaveInEvent) m_WaveIn;
+                waveIn.DeviceNumber = deviceId;
 
                 m_WaveIn.RecordingStopped += RecordingStopped;
                 m_WaveIn.DataAvailable += DataAvailable;
-
-                m_MemStream = new MemoryStream { Capacity = 1000000 };
-                m_WaveWriter = new WaveFileWriter(m_MemStream, m_WaveIn.WaveFormat);
-
-		        m_WaveIn.StartRecording();
-                StartTime = DateTime.Now;
-
-                EndTime = StartTime.AddSeconds(1.1);		        
-		    }
+            }
 		}
 
-        private void DataAvailable(object sender, WaveInEventArgs e)
-        {
-            m_WaveWriter.Write(e.Buffer, 0, e.BytesRecorded);
-            m_WaveWriter.Flush();
+	    public override void DoWork()
+	    {
+            //Dispose of old
+	        if (m_WaveWriter != null)
+	        {
+	            m_WaveWriter.Dispose();
+	        }
 
-            if (DateTime.Now > EndTime)
+            if (m_MemStream != null)
             {
-                m_WaveIn.StopRecording();
+                m_MemStream.Dispose();
+            }
+            
+            //Create new
+            m_MemStream = new MemoryStream();
+	        m_WaveWriter = new WaveFileWriter(m_MemStream, m_WaveIn.WaveFormat);
+
+	        DoneRecording = false;
+	        FirstData = true;
+
+	        m_WaveIn.StartRecording();
+	    }
+
+	    private void DataAvailable(object sender, WaveInEventArgs e)
+        {
+            if (FirstData)
+            {
+                SetStartEnd();
+                FirstData = false;
+            }
+            else
+            {
+                m_WaveWriter.Write(e.Buffer, 0, e.BytesRecorded);
+                m_WaveWriter.Flush();
+
+                if (DateTime.UtcNow > EndTime)
+                {
+                    m_WaveIn.StopRecording();
+                    DoneRecording = true;
+                }                
             }
         }
 
 		private void RecordingStopped(object sender, StoppedEventArgs e)
 		{
-            Console.WriteLine("Received {0} bytes", m_MemStream.Length);
+            int desiredSamples = (RecordForMilliseconds / 1000) * SamplesPerSecond;
 
-		    int desiredSamples = (RecordForTicks/1000)*SamplesPerSecond;
-
-		    List<Double> samples = new List<double>();
 		    m_MemStream.Position = 0;
+
             WaveFileReader reader = new WaveFileReader(m_MemStream);
+		    LogFormat(reader.WaveFormat.SampleRate, reader.WaveFormat.BitsPerSample, reader.WaveFormat.Channels);
+
 		    int channels = reader.WaveFormat.Channels;
 
 		    int frames = Convert.ToInt32(reader.SampleCount/channels);
 
-		    double minValue = double.MaxValue;
-		    double maxValue = double.MinValue;
+		    TraceFileHelper.Verbose(string.Format("Found {0} samples, using {1}", frames, desiredSamples));
 
+		    if (frames > desiredSamples)
+		    {
+		        frames = desiredSamples;
+		    }
+
+            List<Double> channel1 = new List<double>();
+            List<Double> channel2 = new List<double>();
             for (int i = 0; i < frames; i++)
             {
                 float[] frame = reader.ReadNextSampleFrame();
 
-                double value = frame[0];
-                samples.Add(value);
+                //Other array elements are channels that are not of concern.
+                channel1.Add(frame[0]);
 
-                if (minValue > value)
+                if (frame.Length > 1)
                 {
-                    minValue = value;
-                }
-
-                if (maxValue < value)
-                {
-                    maxValue = value;
+                    channel2.Add(frame[1]);
                 }
             }
 
-		    Console.WriteLine("Minimum Value Find - {0}", minValue);
-		    Console.WriteLine("Maximum Value Find - {0}", maxValue);
-
 		    Segment = new AudioSegment
 		    {
+                Channels = channels,
 		        StartTime = StartTime,
 		        SamplesPerSeconds = SamplesPerSecond,
-                Samples = samples
+                Channel1 = channel1,
+                Channel2 = channel2
 		    };
 
-			FireComplete ();
-
-		    if (CompletedRecording != null)
-		    {
-		        CompletedRecording(Segment);
-		    }
+		    SendData(Segment);
 		}
 
 		public override void Dispose ()

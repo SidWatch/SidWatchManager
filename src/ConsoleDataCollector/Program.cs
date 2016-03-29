@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SidWatchAudioLibrary.Factory;
+using SidWatchAudioLibrary.Helpers;
 using SidWatchAudioLibrary.Workers;
-using SidWatchLibrary.Delegates;
 using SidWatchLibrary.Objects;
-using SidWatchLibrary.Workers;
 using TreeGecko.Library.Common.Helpers;
 
 namespace ConsoleDataCollector
@@ -22,6 +18,9 @@ namespace ConsoleDataCollector
 
         static void Main(string[] args)
         {
+            TraceFileHelper.SetupLogging();
+            Trace.Listeners.Add(new ConsoleTraceListener());
+
             m_AudioRecorder = AudioRecorderFactory.GetAudioRecorder(CompletedRecording);
 
             if (args != null && args.Length > 0)
@@ -35,6 +34,8 @@ namespace ConsoleDataCollector
             {
                 CollectData();
             }
+
+            TraceFileHelper.TearDownLogging();
         }
 
         public static void EnumDevices()
@@ -61,7 +62,7 @@ namespace ConsoleDataCollector
                     nextAudioRecordTime = now.AddSeconds(5);
                 }
 
-                Thread.Sleep(100);
+                Thread.Sleep(10);
 
             } while (!stop);
         }
@@ -73,13 +74,31 @@ namespace ConsoleDataCollector
             string filename = _segment.StartTime.ToString("yyyy-MM-dd_hh-mm-ss-tt") + ".json";
             string pathfilename = Path.Combine(path, filename);
 
-            Console.WriteLine("Writing File {0}", pathfilename);
 
+            double minValue;
+            double maxValue;
+
+            AudioHelper.GetMinMax(_segment.Channel1, out minValue, out maxValue);
+
+            TraceFileHelper.Verbose(string.Format("Found {0} samples for channel1", _segment.Channel1.Count));
+            TraceFileHelper.Verbose(string.Format("Minimum Value Find - {0}", minValue));
+            TraceFileHelper.Verbose(string.Format("Maximum Value Find - {0}", maxValue));
+
+            if (_segment.Channels > 1)
+            {
+                AudioHelper.GetMinMax(_segment.Channel2, out minValue, out maxValue);
+
+                TraceFileHelper.Verbose(string.Format("Found {0} samples for channel2", _segment.Channel2.Count));
+                TraceFileHelper.Verbose(string.Format("Minimum Value Find - {0}", minValue));
+                TraceFileHelper.Verbose(string.Format("Maximum Value Find - {0}", maxValue));
+            }
+
+
+            TraceFileHelper.Info(string.Format("Writing File {0}", pathfilename));
             string json = JsonConvert.SerializeObject(_segment);
-
             File.WriteAllText(pathfilename, json);
 
-            Console.WriteLine("Second of audio received ({0})", _segment.StartTime.ToString("O"));
+            TraceFileHelper.Info(string.Format("Second of audio received ({0})", _segment.StartTime.ToString("O")));
         }
     }
 }

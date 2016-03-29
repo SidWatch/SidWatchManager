@@ -11,6 +11,8 @@ namespace SidWatchAudioLibrary.Factory
         {
             string type = Config.GetSettingValue("AudioProvider", "NAudio");
 
+            TraceFileHelper.Info(string.Format("Using audio recorder - {0}", type));
+
             switch (type)
             {
                 case "NAudio":

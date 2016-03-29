@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Accord.Audio;
+using Accord.Audio.Formats;
 using Accord.DirectSound;
 using SidWatchLibrary.Delegates;
 using SidWatchLibrary.Objects;
@@ -14,9 +16,8 @@ namespace SidWatchAudioLibrary.Workers
 		private MemoryStream m_MemStream;
 
 	    public AccordAudioRecorderWorker(CompletedRecording _complete)
+	        : base(_complete)
 		{
-			CompletedRecording = _complete;
-
 	        string desiredAudioDevice = Config.GetSettingValue("AudioDeviceName");
 
 	        AudioDeviceInfo captureDeviceInfo = null;
@@ -52,21 +53,16 @@ namespace SidWatchAudioLibrary.Workers
             m_AudioSource.NewFrame += NewAudioFrame;
             m_AudioSource.AudioSourceError += AudioSourceError;
 		}
-		
-
-		public CompletedRecording CompletedRecording { get; private set; }
 
 	    public override void DoWork()
 	    {
             //Create local memory stream for this recording
 	        m_MemStream = new MemoryStream();
 
+	        FirstData = true;
+            
             //Start recording
             m_AudioSource.Start();
-
-            //Set the start time and end time
-	        StartTime = DateTime.Now;
-	        EndTime = StartTime.AddSeconds(1.1);
 	    }
 
         private void AudioSourceError(object _sender, AudioSourceErrorEventArgs _e)
@@ -76,50 +72,58 @@ namespace SidWatchAudioLibrary.Workers
 
         private void NewAudioFrame(object _sender, NewFrameEventArgs _e)
 	    {
-            //Append data to the stream
-	        byte[] data = _e.Signal.RawData;
-	        m_MemStream.Write(data, 0, data.Length);
-
-            //Check if done
-            if (DateTime.Now > EndTime)
+            if (FirstData)
             {
-                //stop if done
-                m_AudioSource.Stop();
-                Done();
+                SetStartEnd();
+            }
+            else
+            {
+                //Append data to the stream
+                byte[] data = _e.Signal.RawData;
+                m_MemStream.Write(data, 0, data.Length);
+
+                //Check if done
+                if (DateTime.UtcNow > EndTime)
+                {
+                    //stop if done
+                    m_AudioSource.Stop();
+                    Done();
+                }                
             }
 	    }
 
 		private void Done()
 		{
-			byte[] data = m_MemStream.ToArray();
-            m_MemStream.Dispose();
-		    m_MemStream = null;
+		    WaveDecoder decoder = new WaveDecoder(m_MemStream);
+		    LogFormat(decoder.SampleRate, decoder.BitsPerSample, decoder.Channels);
 
-		    int desiredBytes = Convert.ToInt32((RecordForTicks/1000)*96000);
+            int desiredSamples = (RecordForMilliseconds / 1000) * SamplesPerSecond;
 
-		    byte[] output = new byte[desiredBytes];
+		    Signal signal = decoder.Decode();
+            
+		    int frames = signal.Samples;
 
-		    if (data.Length > desiredBytes)
+		    TraceFileHelper.Verbose(string.Format("Found {0} samples, using {1}", frames, desiredSamples));
+
+		    if (frames > desiredSamples)
 		    {
-		        Array.Copy(data, 0, output, 0, desiredBytes);		   
-            }
-		    else
+		        frames = desiredSamples;
+		    }
+
+            List<Double> samples = new List<double>();
+		    for (int i = 0; i < frames; i++)
 		    {
-		        output = data;
+		        samples.Add(signal.GetSample(0, i));
 		    }
 
 		    Segment = new AudioSegment
 		    {
 		        StartTime = StartTime,
 		        SamplesPerSeconds = SamplesPerSecond,
+                Channel1 = samples
 		    };
 
-			FireComplete ();
-
-		    if (CompletedRecording != null)
-		    {
-		        CompletedRecording(Segment);
-		    }
+		    SendData(Segment);
 		}
 
 		public override void Dispose ()
