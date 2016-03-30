@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleDataCollector", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidWatchAudioLibrary", "..\SidWatchAudioLibrary\SidWatchAudioLibrary.csproj", "{BD25324A-8D26-4D1F-B255-C914D0C656A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidWatchCollectionLibrary", "..\SidWatchCollectionLibrary\SidWatchCollectionLibrary.csproj", "{760EA571-E1C2-4B86-A44C-0A76914E8CD8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,19 @@ Global
 		{BD25324A-8D26-4D1F-B255-C914D0C656A2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BD25324A-8D26-4D1F-B255-C914D0C656A2}.Release|x64.ActiveCfg = Release|Any CPU
 		{BD25324A-8D26-4D1F-B255-C914D0C656A2}.Release|x86.ActiveCfg = Release|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Debug|x64.ActiveCfg = Debug|x64
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Debug|x64.Build.0 = Debug|x64
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|x64.ActiveCfg = Release|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
