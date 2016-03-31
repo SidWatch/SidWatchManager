@@ -150,10 +150,10 @@ namespace SidWatchAudioLibrary.Workers
 		    {
                 Channels = channels,
 		        StartTime = StartTime,
-		        SamplesPerSeconds = SamplesPerSecond,
-                Channel1 = channel1,
-                Channel2 = channel2
+		        SamplesPerSeconds = SamplesPerSecond
 		    };
+
+            if ()
 
 		    SendData(Segment);
 		}

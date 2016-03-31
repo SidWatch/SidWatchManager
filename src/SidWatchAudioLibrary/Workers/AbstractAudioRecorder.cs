@@ -14,16 +14,18 @@ namespace SidWatchAudioLibrary.Workers
             SamplesPerSecond = Config.GetIntValue("SamplesPerSecond", 96000);
             BitsPerSample = Config.GetIntValue("BitsPerSample", 32);
             Channels = Config.GetIntValue("Channels", 1);
+            ChannelToKeep = Config.GetIntValue("ChannelToKeep", 0);
 
             CompletedRecording = _complete;
         }
 
         public CompletedRecording CompletedRecording { get; private set; }
 
-        public int Channels { get; set; }
-        public int RecordForMilliseconds { get; set; }
-        public int SamplesPerSecond { get; set; }
-        public int BitsPerSample { get; set; }
+        public int Channels { get; private set; }
+        public int ChannelToKeep { get; private set; }
+        public int RecordForMilliseconds { get; private set; }
+        public int SamplesPerSecond { get; private set; }
+        public int BitsPerSample { get; private set; }
         public bool FirstData { get; protected set; }
         public bool DoneRecording { get; protected set; }
 
