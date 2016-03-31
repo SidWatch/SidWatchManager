@@ -15,10 +15,10 @@ namespace SidWatchCollectionLibrary.Managers
 {
     public class CollectionManager
     {
-        private object m_Lock = new object();
+        private readonly object m_Lock = new object();
         private bool m_Stop = false;
         private Thread m_RunThread;
-        private AbstractAudioRecorder m_AudioRecorder;
+        private readonly AbstractAudioRecorder m_AudioRecorder;
         private NancyHost m_ApiHost;
 
         public CollectionManager()
@@ -142,7 +142,8 @@ namespace SidWatchCollectionLibrary.Managers
                 TraceFileHelper.Verbose(string.Format("Maximum Value Find - {0}", maxValue));
             }
 
-
+            DataCache.GetInstance().LastAudioSegment = _segment;
+            
             TraceFileHelper.Info(string.Format("Writing File {0}", pathfilename));
             string json = JsonConvert.SerializeObject(_segment);
             File.WriteAllText(pathfilename, json);

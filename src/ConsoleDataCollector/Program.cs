@@ -9,7 +9,7 @@ namespace ConsoleDataCollector
     {
         private static CollectionManager m_CollectionManager;
 
-        static void Main(string[] args)
+        static void Main(string[] _args)
         {
             TraceFileHelper.SetupLogging();
             Trace.Listeners.Add(new ConsoleTraceListener());
@@ -24,14 +24,5 @@ namespace ConsoleDataCollector
            
             TraceFileHelper.TearDownLogging();
         }
-
-
-
-        public static void CollectData()
-        {
-
-        }
-
- 
     }
 }

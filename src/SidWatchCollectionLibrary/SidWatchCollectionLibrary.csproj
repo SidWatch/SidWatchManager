@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objects\DataCache.cs" />
     <Compile Include="Managers\CollectionManager.cs" />
     <Compile Include="Api\HostingBootstrapper.cs" />
     <Compile Include="Api\HostingModule.cs" />
