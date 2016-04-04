@@ -153,7 +153,20 @@ namespace SidWatchAudioLibrary.Workers
 		        SamplesPerSeconds = SamplesPerSecond
 		    };
 
-            if ()
+            //Set the audio
+		    if (ChannelToKeep == 0)
+		    {
+		        Segment.Channel1 = channel1;
+		        Segment.Channel2 = channel2;
+		    }
+            else if (ChannelToKeep == 1)
+		    {
+                Segment.Channel1 = channel1;		        
+		    }
+		    else
+		    {
+                Segment.Channel2 = channel2;		        
+		    }
 
 		    SendData(Segment);
 		}

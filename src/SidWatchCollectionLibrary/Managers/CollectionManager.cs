@@ -8,6 +8,7 @@ using SidWatchAudioLibrary.Factory;
 using SidWatchAudioLibrary.Helpers;
 using SidWatchAudioLibrary.Workers;
 using SidWatchCollectionLibrary.Api;
+using SidWatchCollectionLibrary.Writers;
 using SidWatchLibrary.Objects;
 using TreeGecko.Library.Common.Helpers;
 
@@ -20,6 +21,8 @@ namespace SidWatchCollectionLibrary.Managers
         private Thread m_RunThread;
         private readonly AbstractAudioRecorder m_AudioRecorder;
         private NancyHost m_ApiHost;
+        private Station m_Station;
+        private HourlyWriter m_Writer;
 
         public CollectionManager()
         {
@@ -28,6 +31,13 @@ namespace SidWatchCollectionLibrary.Managers
             RecordForMilliseconds = Config.GetIntValue("RecordForMilliseconds", 1000);
             ApiPort = Config.GetIntValue("ApiPort", 8080);
             EnableApi = Config.GetBooleanValue("EnableApi", true);
+            
+            m_Station = new Station();
+            m_Station.StationName = "K10001";
+
+            //TODO load Station
+
+            m_Writer = new HourlyWriter(m_Station);
             
             if (RecordEveryMilliseconds < RecordForMilliseconds)
             {
@@ -60,8 +70,10 @@ namespace SidWatchCollectionLibrary.Managers
                     //Start Api
                     if (EnableApi)
                     {
-                        HostConfiguration config = new HostConfiguration();
-                        config.UrlReservations = new UrlReservations {CreateAutomatically = true, User = "Everyone"};
+                        HostConfiguration config = new HostConfiguration
+                        {
+                            UrlReservations = new UrlReservations {CreateAutomatically = true, User = "Everyone"}
+                        };
 
                         m_ApiHost = new NancyHost(
                             new Uri(string.Format("http://localhost:{0}", ApiPort))
@@ -133,7 +145,7 @@ namespace SidWatchCollectionLibrary.Managers
             TraceFileHelper.Verbose(string.Format("Minimum Value Find - {0}", minValue));
             TraceFileHelper.Verbose(string.Format("Maximum Value Find - {0}", maxValue));
 
-            if (_segment.Channels > 1)
+            if (_segment.Channel2 != null)
             {
                 AudioHelper.GetMinMax(_segment.Channel2, out minValue, out maxValue);
 
@@ -144,9 +156,11 @@ namespace SidWatchCollectionLibrary.Managers
 
             DataCache.GetInstance().LastAudioSegment = _segment;
             
-            TraceFileHelper.Info(string.Format("Writing File {0}", pathfilename));
-            string json = JsonConvert.SerializeObject(_segment);
-            File.WriteAllText(pathfilename, json);
+            //TraceFileHelper.Info(string.Format("Writing File {0}", pathfilename));
+            //string json = JsonConvert.SerializeObject(_segment);
+            //File.WriteAllText(pathfilename, json);
+
+            m_Writer.WriteAudioSegment(_segment);
 
             TraceFileHelper.Info(string.Format("Second of audio received ({0})", _segment.StartTime.ToString("O")));
         }

@@ -43,21 +43,29 @@ namespace SidWatchAudioLibrary.Helpers
 
 	    public static void GetMinMax(List<Double> _segmentData, out double _minValue, out double _maxValue)
 	    {
-            _minValue = double.MaxValue;
-            _maxValue = double.MinValue;
+	        if (_segmentData != null)
+	        {
+	            _minValue = double.MaxValue;
+	            _maxValue = double.MinValue;
 
-            foreach (double sample in _segmentData)
-            {
-                if (_minValue > sample)
-                {
-                    _minValue = sample;
-                }
+	            foreach (double sample in _segmentData)
+	            {
+	                if (_minValue > sample)
+	                {
+	                    _minValue = sample;
+	                }
 
-                if (_maxValue < sample)
-                {
-                    _maxValue = sample;
-                }
-            }
+	                if (_maxValue < sample)
+	                {
+	                    _maxValue = sample;
+	                }
+	            }
+
+	            return;
+	        }
+
+	        _minValue = 0;
+	        _maxValue = 0;
 	    }
 	}
 }

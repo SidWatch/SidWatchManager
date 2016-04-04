@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidWatchAudioLibrary", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidWatchCollectionLibrary", "..\SidWatchCollectionLibrary\SidWatchCollectionLibrary.csproj", "{760EA571-E1C2-4B86-A44C-0A76914E8CD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpFITS", "..\..\..\CSharpFITS\src\CSharpFITS.csproj", "{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,18 @@ Global
 		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|x64.ActiveCfg = Release|Any CPU
 		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|x86.ActiveCfg = Release|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Release|x64.ActiveCfg = Release|Any CPU
+		{93C93A99-D18F-495E-8AC9-6B6F6F7F273E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
