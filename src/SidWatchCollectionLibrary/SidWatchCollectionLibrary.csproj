@@ -50,10 +50,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HDF5DotNet, Version=1.8.9.0, Culture=neutral, PublicKeyToken=a4952c8df86d6e8c, processorArchitecture=AMD64">
-      <HintPath>..\SidWatchManager\packages\HDF5DotNet.x64.1.8.9\lib\Net40\HDF5DotNet.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Nancy, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\SidWatchManager\packages\Nancy.1.4.3\lib\net40\Nancy.dll</HintPath>
       <Private>True</Private>
@@ -74,6 +70,10 @@
       <HintPath>..\SidWatchManager\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="sharpHDF, Version=0.8.27.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\SidWatchManager\packages\sharpHDF.0.8.27.0\lib\net45\sharpHDF.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -87,22 +87,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\HD5Helper.cs" />
+    <Compile Include="Helpers\HDFHelper.cs" />
     <Compile Include="Objects\DataCache.cs" />
     <Compile Include="Managers\CollectionManager.cs" />
     <Compile Include="Api\HostingBootstrapper.cs" />
     <Compile Include="Api\HostingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Writers\FitsWriter.cs" />
     <Compile Include="Writers\HDFWriter.cs" />
     <Compile Include="Writers\HourlyWriter.cs" />
     <Compile Include="Writers\IFileWriter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CSharpFITS\src\CSharpFITS.csproj">
-      <Project>{93c93a99-d18f-495e-8ac9-6b6f6f7f273e}</Project>
-      <Name>CSharpFITS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SidWatchAudioLibrary\SidWatchAudioLibrary.csproj">
       <Project>{BD25324A-8D26-4D1F-B255-C914D0C656A2}</Project>
       <Name>SidWatchAudioLibrary</Name>
@@ -116,6 +111,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -125,7 +121,7 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /s /y "$(SolutionDir)packages\HDF5DotNet.x64.1.8.9\NativeBinaries\*.*" "$(TargetDir)"
+    <PostBuildEvent>
 if not exist "$(TargetDir)bin32" md "$(TargetDir)bin32"
 xcopy /s /y "$(SolutionDir)packages\HDF.PInvoke.1.8.16.11\lib\native\bin32\*.*" "$(TargetDir)bin32"
 if not exist "$(TargetDir)bin64" md "$(TargetDir)bin64"

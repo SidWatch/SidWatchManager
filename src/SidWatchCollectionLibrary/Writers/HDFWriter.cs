@@ -1,19 +1,17 @@
 ﻿using System;
 using System.IO;
-using HDF5DotNet;
-using SidWatchCollectionLibrary.Helpers;
+using sharpHDF.Library.Objects;
 using SidWatchLibrary.Objects;
 
 namespace SidWatchCollectionLibrary.Writers
 {
-    public class HdfWriter : IFileWriter
+    public class HdfWriter : IFileWriter, IDisposable
     {
-        private H5FileId m_FileId = null;
-        private H5GroupId m_PrimaryGroupId = null;
-        
+        private Hdf5File m_File;
+                
         public void OpenFile(string _folder, Station _station, string _fileSuffix)
         {
-            if (m_FileId != null)
+            if (m_File != null)
             {
                 throw new Exception("File already open");
             }
@@ -23,49 +21,45 @@ namespace SidWatchCollectionLibrary.Writers
 
             if (File.Exists(filepath))
             {
-                m_FileId = H5F.open(filepath, H5F.OpenMode.ACC_RDWR);   
+                m_File = new Hdf5File(filepath);
             }
             else
             {
-                m_FileId = H5F.create(filepath, H5F.CreateMode.ACC_TRUNC);
-            }
-
-            H5G.
-
-            var primaryGroupInfo = H5G.getInfoByName(m_FileId, "primary");
-
+                //Setup the new file
+                m_File = Hdf5File.Create(filepath);
+                SetFileAttributes(m_File, _station);
+            }           
             
-            SetPrimaryGroupAttributes(m_FileId, _station);
         }
 
-        private void SetPrimaryGroupAttributes(H5ObjectWithAttributes _groupId, Station _station)
+        private void SetFileAttributes(Hdf5File _file, Station _station)
         {
-            int attributeCount = H5A.getNumberOfAttributes(_groupId);
+            var attributes = _file.Attributes;
 
-            if (attributeCount == 0)
+            if (attributes.Count == 0)
             {
-                HD5Helper.SetAttribute(_groupId, "MonitorId", _station.MonitorId);
-                HD5Helper.SetAttribute(_groupId, "StationName", _station.StationName);
-                HD5Helper.SetAttribute(_groupId, "Latitude", _station.Latitude);
-                HD5Helper.SetAttribute(_groupId, "Longitude", _station.Longitude);
-                HD5Helper.SetAttribute(_groupId, "UtcOffset", _station.UtcOffset);
-                HD5Helper.SetAttribute(_groupId, "Timezone", _station.Timezone);
-                HD5Helper.SetAttribute(_groupId, "CreatedDateTime", DateTime.UtcNow.ToString("O"));
+                attributes.Add("MonitorId", _station.MonitorId);
+                attributes.Add("StationName", _station.StationName);
+                attributes.Add("Latitude", _station.Latitude);
+                attributes.Add("Longitude", _station.Longitude);
+                attributes.Add("UtcOffset", _station.UtcOffset);
+                attributes.Add("Timezone", _station.Timezone);
+                attributes.Add("CreatedDateTime", DateTime.UtcNow.ToString("O"));
             }
         }
 
         public void CloseFile()
         {
-            if (m_FileId != null)
+            if (m_File != null)
             {
-                H5F.close(m_FileId);
-                m_FileId = null;
+                m_File.Close();
+                m_File = null;
             }
         }
 
         public bool IsFileOpen()
         {
-            if (m_FileId != null)
+            if (m_File != null)
             {
                 return true;
             }
@@ -75,12 +69,19 @@ namespace SidWatchCollectionLibrary.Writers
 
         public void WriteAudioSegment(AudioSegment _segment)
         {
-            if (m_FileId == null)
+            if (m_File == null)
             {
                 throw new Exception("File not open");
             }
 
 
+
+        }
+
+        public void Dispose()
+        {
+            CloseFile();
         }
     }
 }
+

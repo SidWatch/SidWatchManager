@@ -36,7 +36,7 @@ namespace SidWatchCollectionLibrary.Writers
             }
             else
             {
-                m_Writer = new FitsWriter();
+                //m_Writer = new FitsWriter();
             }
         }
 
