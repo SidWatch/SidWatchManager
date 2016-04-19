@@ -1,5 +1,5 @@
 ﻿using System;
-using SidWatchLibrary.Delegates;
+using SidWatch.Library.Delegates;
 using SidWatchLibrary.Objects;
 using SidWatchLibrary.Workers;
 using TreeGecko.Library.Common.Helpers;

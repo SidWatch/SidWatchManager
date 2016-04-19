@@ -1,11 +1,10 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System.Collections.Generic;
 using SidWatchLibrary.Objects;
 
-namespace SidWatchLibrary.Helpers
+namespace SidWatch.Library.Helpers
 {
 	public static class PlotModelHelper
 	{

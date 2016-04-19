@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
-using SidWatchLibrary.Delegates;
+using SidWatch.Library.Delegates;
 using SidWatchLibrary.Objects;
 using TreeGecko.Library.Common.Helpers;
 
@@ -131,42 +131,23 @@ namespace SidWatchAudioLibrary.Workers
 		        frames = desiredSamples;
 		    }
 
-            List<Double> channel1 = new List<double>();
-            List<Double> channel2 = new List<double>();
+		    float[] channel1 = new float[desiredSamples];            
+
             for (int i = 0; i < frames; i++)
             {
                 float[] frame = reader.ReadNextSampleFrame();
 
                 //Other array elements are channels that are not of concern.
-                channel1.Add(frame[0]);
-
-                if (frame.Length > 1)
-                {
-                    channel2.Add(frame[1]);
-                }
+                channel1[i] = frame[0];
             }
 
 		    Segment = new AudioSegment
 		    {
-                Channels = channels,
+		        Channels = channels,
 		        StartTime = StartTime,
-		        SamplesPerSeconds = SamplesPerSecond
+		        SamplesPerSeconds = SamplesPerSecond,
+		        Channel1 = channel1
 		    };
-
-            //Set the audio
-		    if (ChannelToKeep == 0)
-		    {
-		        Segment.Channel1 = channel1;
-		        Segment.Channel2 = channel2;
-		    }
-            else if (ChannelToKeep == 1)
-		    {
-                Segment.Channel1 = channel1;		        
-		    }
-		    else
-		    {
-                Segment.Channel2 = channel2;		        
-		    }
 
 		    SendData(Segment);
 		}

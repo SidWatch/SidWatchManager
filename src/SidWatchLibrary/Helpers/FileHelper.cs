@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using SidWatchLibrary.Objects;
 
-namespace SidWatchLibrary.Helpers
+namespace SidWatch.Library.Helpers
 {
 	public static class FileHelper
 	{

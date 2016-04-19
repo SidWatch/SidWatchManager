@@ -7,7 +7,7 @@
     <ProjectGuid>{760EA571-E1C2-4B86-A44C-0A76914E8CD8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SidWatchCollectionLibrary</RootNamespace>
+    <RootNamespace>SidWatch.Collection.Library</RootNamespace>
     <AssemblyName>SidWatchCollectionLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

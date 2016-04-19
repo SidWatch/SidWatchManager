@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 
-namespace SidWatchLibrary.Interfaces
+namespace SidWatch.Library.Interfaces
 {
 	public interface IWorker
 	{

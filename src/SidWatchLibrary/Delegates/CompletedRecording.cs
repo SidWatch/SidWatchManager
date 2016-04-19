@@ -1,6 +1,6 @@
 ﻿using SidWatchLibrary.Objects;
 
-namespace SidWatchLibrary.Delegates
+namespace SidWatch.Library.Delegates
 {
 	public delegate void CompletedRecording(AudioSegment _segment);
 }

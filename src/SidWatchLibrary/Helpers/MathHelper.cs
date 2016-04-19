@@ -1,7 +1,6 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 
-namespace SidWatchLibrary.Helpers
+namespace SidWatch.Library.Helpers
 {
 	public static class MathHelper
 	{
@@ -21,6 +20,25 @@ namespace SidWatchLibrary.Helpers
 
 			return null;
 		}
+
+        public static Complex[] FromSingleArray(float[] _input)
+        {
+            if (_input != null)
+            {
+                int length = _input.Length;
+
+                Complex[] output = new Complex[length];
+
+                for (int i = 0; i < length; i++)
+                {
+                    output[i] = new Complex(_input[i], 0);
+                }
+
+                return output;
+            }
+
+            return null;
+        }
 
 		/// <summary>
 		/// returns the magnitudes of the Complex vectors

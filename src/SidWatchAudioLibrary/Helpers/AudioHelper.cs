@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using SidWatchAudioLibrary.Workers;
-using SidWatchLibrary.Delegates;
-using SidWatchLibrary.Interfaces;
 using SidWatchLibrary.Objects;
 
 namespace SidWatchAudioLibrary.Helpers
@@ -41,14 +39,14 @@ namespace SidWatchAudioLibrary.Helpers
 			return output;
 		}
 
-	    public static void GetMinMax(List<Double> _segmentData, out double _minValue, out double _maxValue)
+	    public static void GetMinMax(float[] _segmentData, out float _minValue, out float _maxValue)
 	    {
 	        if (_segmentData != null)
 	        {
-	            _minValue = double.MaxValue;
-	            _maxValue = double.MinValue;
+	            _minValue = float.MaxValue;
+	            _maxValue = float.MinValue;
 
-	            foreach (double sample in _segmentData)
+	            foreach (float sample in _segmentData)
 	            {
 	                if (_minValue > sample)
 	                {

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using SidWatchLibrary.Objects;
-using SidWatchLibrary.Interfaces;
+﻿using SidWatch.Library.Interfaces;
 
-namespace SidWatchLibrary.Delegates
+namespace SidWatch.Library.Delegates
 {
 	public delegate void CompletedWork(IWorker _worker);
 }

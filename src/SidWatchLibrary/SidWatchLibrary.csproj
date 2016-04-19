@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7753719B-2232-418A-A624-71347ADE9BE0}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>SidWatchLibrary</RootNamespace>
+    <RootNamespace>SidWatch.Library</RootNamespace>
     <AssemblyName>SidWatchLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\SidWatchManager\</SolutionDir>

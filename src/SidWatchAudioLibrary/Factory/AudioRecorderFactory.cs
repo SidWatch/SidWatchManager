@@ -1,6 +1,6 @@
 ﻿using System;
+using SidWatch.Library.Delegates;
 using SidWatchAudioLibrary.Workers;
-using SidWatchLibrary.Delegates;
 using TreeGecko.Library.Common.Helpers;
 
 namespace SidWatchAudioLibrary.Factory
@@ -17,10 +17,10 @@ namespace SidWatchAudioLibrary.Factory
             {
                 case "NAudio":
                     return new NAudioRecorderWorker(_completedRecording);
-                case "CSCore":
-                    return new CSCoreAudioRecorderWorker(_completedRecording);
-                case "Accord":
-                    return new AccordAudioRecorderWorker(_completedRecording);
+                //case "CSCore":
+                //    return new CSCoreAudioRecorderWorker(_completedRecording);
+                //case "Accord":
+                //    return new AccordAudioRecorderWorker(_completedRecording);
             }
 
             throw new ArgumentOutOfRangeException("Unknown audio type");

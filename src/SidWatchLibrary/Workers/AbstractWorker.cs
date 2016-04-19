@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
-using SidWatchLibrary.Delegates;
-using SidWatchLibrary.Interfaces;
+using SidWatch.Library.Delegates;
+using SidWatch.Library.Interfaces;
 
 namespace SidWatchLibrary.Workers
 {

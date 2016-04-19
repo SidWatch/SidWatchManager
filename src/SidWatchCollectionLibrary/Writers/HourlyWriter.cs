@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using SidWatch.Collection.Library.Writers;
 using SidWatchLibrary.Objects;
 using TreeGecko.Library.Common.Helpers;
 
@@ -33,10 +34,6 @@ namespace SidWatchCollectionLibrary.Writers
             if (writerType.Equals("HDF5", StringComparison.InvariantCultureIgnoreCase))
             {
                 m_Writer = new HdfWriter();
-            }
-            else
-            {
-                //m_Writer = new FitsWriter();
             }
         }
 
