@@ -70,8 +70,8 @@
       <HintPath>..\SidWatchManager\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="sharpHDF, Version=0.8.27.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\SidWatchManager\packages\sharpHDF.0.8.27.0\lib\net45\sharpHDF.dll</HintPath>
+    <Reference Include="sharpHDF, Version=0.8.29.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\SidWatchManager\packages\sharpHDF.0.8.29.0\lib\net45\sharpHDF.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

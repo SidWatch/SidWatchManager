@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using SidWatchCollectionLibrary.Managers;
 using TreeGecko.Library.Common.Helpers;
@@ -19,8 +20,17 @@ namespace ConsoleDataCollector
 
             do
             {
+                ConsoleKeyInfo key = Console.ReadKey(true);
+
+                if (key.Modifiers.HasFlag(ConsoleModifiers.Control)
+                    && key.Key == ConsoleKey.X)
+                {
+                    Console.WriteLine("Stopping");
+                    m_CollectionManager.Stop();
+                }
+
                 Thread.Sleep(100);
-            } while (true);
+            } while (m_CollectionManager.Running);
            
             TraceFileHelper.TearDownLogging();
         }

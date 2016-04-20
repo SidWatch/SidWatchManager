@@ -82,6 +82,8 @@ namespace SidWatch.Collection.Library.Writers
             {
                 if (m_File != null)
                 {
+                    m_AudioGroup = null;
+                    m_PowerSpectrumGroup = null;
                     m_File.Close();
                     m_File = null;
                 }

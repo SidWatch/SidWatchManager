@@ -1,12 +1,11 @@
 ﻿using System;
-using System.IO;
-using SidWatch.Collection.Library.Writers;
+using SidWatchCollectionLibrary.Writers;
 using SidWatchLibrary.Objects;
 using TreeGecko.Library.Common.Helpers;
 
-namespace SidWatchCollectionLibrary.Writers
+namespace SidWatch.Collection.Library.Writers
 {
-    public class HourlyWriter
+    public class HourlyWriter : IDisposable
     {
         private readonly IFileWriter m_Writer;
         private readonly Station m_Station;
@@ -72,6 +71,14 @@ namespace SidWatchCollectionLibrary.Writers
             {
                 string fileSuffix = now.ToString("yyyyMMdd_HH");
                 m_Writer.OpenFile(m_OutputFolder, m_Station, fileSuffix);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (m_Writer != null)
+            {
+                m_Writer.CloseFile();
             }
         }
     }

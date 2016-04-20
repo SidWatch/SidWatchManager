@@ -103,7 +103,7 @@ namespace SidWatchAudioLibrary.Workers
                 m_WaveWriter.Write(e.Buffer, 0, e.BytesRecorded);
                 m_WaveWriter.Flush();
 
-                if (DateTime.UtcNow > EndTime)
+                if (m_WaveWriter.Position >= DesiredBytes)
                 {
                     m_WaveIn.StopRecording();
                     DoneRecording = true;

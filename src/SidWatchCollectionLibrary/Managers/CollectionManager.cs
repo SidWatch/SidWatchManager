@@ -4,6 +4,7 @@ using System.Threading;
 using Nancy.Hosting.Self;
 using Nancy.ViewEngines.SuperSimpleViewEngine;
 using Newtonsoft.Json;
+using SidWatch.Collection.Library.Writers;
 using SidWatch.Library.Math;
 using SidWatchAudioLibrary.Factory;
 using SidWatchAudioLibrary.Helpers;
@@ -46,8 +47,6 @@ namespace SidWatchCollectionLibrary.Managers
 
 
             //TODO load Station
-
-            m_Writer = new HourlyWriter(m_Station);
             
             if (RecordEveryMilliseconds < RecordForMilliseconds)
             {
@@ -76,6 +75,8 @@ namespace SidWatchCollectionLibrary.Managers
                 {
                     m_Stop = false;
                     Running = true;
+
+                    m_Writer = new HourlyWriter(m_Station);
 
                     //Start Api
                     if (EnableApi)
@@ -121,6 +122,11 @@ namespace SidWatchCollectionLibrary.Managers
                 Thread.Sleep(10);
 
             } while (!m_Stop);
+
+            if (m_Writer != null)
+            {
+                m_Writer.Dispose();
+            }
 
             Running = false;
         }

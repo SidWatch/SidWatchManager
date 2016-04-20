@@ -16,11 +16,16 @@ namespace SidWatchAudioLibrary.Workers
             Channels = Config.GetIntValue("Channels", 1);
             ChannelToKeep = Config.GetIntValue("ChannelToKeep", 0);
 
+            DesiredSamples = (RecordForMilliseconds/1000)*SamplesPerSecond;
+            DesiredBytes = DesiredSamples*BitsPerSample/8;
+
             CompletedRecording = _complete;
         }
 
         public CompletedRecording CompletedRecording { get; private set; }
 
+        public long DesiredSamples { get; private set; }
+        public long DesiredBytes { get; private set; }
         public int Channels { get; private set; }
         public int ChannelToKeep { get; private set; }
         public int RecordForMilliseconds { get; private set; }
