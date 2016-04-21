@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SidWatchLibrary.Math
+﻿namespace SidWatch.Library.Calculation
 {
 	public class SpectrumResult
 	{

@@ -92,9 +92,9 @@
     <Compile Include="Workers\AbstractWorker.cs" />
     <Compile Include="Interfaces\IWorker.cs" />
     <Compile Include="Delegates\CompletedWork.cs" />
-    <Compile Include="Math\Signal.cs" />
-    <Compile Include="Math\PowerDensity.cs" />
-    <Compile Include="Math\SpectrumResult.cs" />
+    <Compile Include="Calculation\Signal.cs" />
+    <Compile Include="Calculation\PowerDensity.cs" />
+    <Compile Include="Calculation\SpectrumResult.cs" />
     <Compile Include="Helpers\MathHelper.cs" />
     <Compile Include="Helpers\ArrayHelper.cs" />
     <Compile Include="Workers\NancyWorker.cs" />

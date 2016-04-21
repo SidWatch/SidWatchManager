@@ -5,7 +5,7 @@ using Nancy.Hosting.Self;
 using Nancy.ViewEngines.SuperSimpleViewEngine;
 using Newtonsoft.Json;
 using SidWatch.Collection.Library.Writers;
-using SidWatch.Library.Math;
+using SidWatch.Library.Calculation;
 using SidWatchAudioLibrary.Factory;
 using SidWatchAudioLibrary.Helpers;
 using SidWatchAudioLibrary.Workers;

@@ -1,4 +1,4 @@
-﻿namespace SidWatch.Library.Math
+﻿namespace SidWatch.Library.Calculation
 {
 	public class PowerDensity
 	{

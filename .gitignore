@@ -9,3 +9,5 @@ src/SidWatchAudioLibrary/obj/
 src/SidWatchManager/packages/
 src/SidWatchCollectionLibrary/bin/
 src/SidWatchCollectionLibrary/obj/
+src/SidWatchLibraryTests/bin/
+src/SidWatchLibraryTests/obj/

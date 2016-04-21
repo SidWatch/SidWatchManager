@@ -5,7 +5,7 @@ using MathNet.Numerics.IntegralTransforms;
 using SidWatch.Library.Helpers;
 using SidWatchLibrary.Objects;
 
-namespace SidWatch.Library.Math
+namespace SidWatch.Library.Calculation
 {
 	public static class Signal
 	{

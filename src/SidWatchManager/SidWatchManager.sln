@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidWatchAudioLibrary", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidWatchCollectionLibrary", "..\SidWatchCollectionLibrary\SidWatchCollectionLibrary.csproj", "{760EA571-E1C2-4B86-A44C-0A76914E8CD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidWatchLibraryTests", "..\SidWatchLibraryTests\SidWatchLibraryTests.csproj", "{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,18 @@ Global
 		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|x64.ActiveCfg = Release|Any CPU
 		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|x86.ActiveCfg = Release|Any CPU
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Debug|Mixed Platforms.Build.0 = Debug|x64
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Debug|x64.ActiveCfg = Debug|x64
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Debug|x64.Build.0 = Debug|x64
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Debug|x86.ActiveCfg = Debug|x64
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Release|Any CPU.ActiveCfg = Release|x64
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Release|Mixed Platforms.ActiveCfg = Release|x64
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Release|Mixed Platforms.Build.0 = Release|x64
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Release|x64.ActiveCfg = Release|x64
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Release|x64.Build.0 = Release|x64
+		{D8C79292-F85C-44F0-B644-FE5AE7B0F2ED}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
