@@ -1,8 +1,8 @@
 ﻿using System;
 using SidWatch.Library.Delegates;
+using SidWatch.Library.Helpers;
 using SidWatchLibrary.Objects;
 using SidWatchLibrary.Workers;
-using TreeGecko.Library.Common.Helpers;
 
 namespace SidWatchAudioLibrary.Workers
 {
@@ -42,9 +42,9 @@ namespace SidWatchAudioLibrary.Workers
 
         protected void LogFormat(int _sampleRate, int _bitsPerSample, int _channels)
         {
-            TraceFileHelper.Verbose(string.Format("Output - Samples Per Second - {0} ", _sampleRate));
-            TraceFileHelper.Verbose(string.Format("       - Bits per Sample    - {0} ", _bitsPerSample));
-            TraceFileHelper.Verbose(string.Format("       - Channels           - {0} ", _channels));
+            TraceHelper.Verbose(string.Format("Output - Samples Per Second - {0} ", _sampleRate));
+            TraceHelper.Verbose(string.Format("       - Bits per Sample    - {0} ", _bitsPerSample));
+            TraceHelper.Verbose(string.Format("       - Channels           - {0} ", _channels));
         }
 
         protected void SetStartEnd()
@@ -58,10 +58,7 @@ namespace SidWatchAudioLibrary.Workers
         {
             FireComplete();
 
-            if (CompletedRecording != null)
-            {
-                CompletedRecording(_segment);
-            }
+            CompletedRecording?.Invoke(_segment);
         }
     }
 }

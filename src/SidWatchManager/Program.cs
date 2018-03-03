@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Windows.Forms;
 
 namespace SidWatchManager
 {
@@ -6,11 +6,8 @@ namespace SidWatchManager
 	{
 		public static void Main (string[] args)
 		{
-            //Application.Init ();
-            //MainWindow win = new MainWindow ();
-
-            //win.Show ();
-            //Application.Run ();
-		}
+            MainForm form = new MainForm();
+            Application.Run(form);
+        }
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using SidWatch.Library.Delegates;
+using SidWatch.Library.Helpers;
 using SidWatchAudioLibrary.Workers;
-using TreeGecko.Library.Common.Helpers;
 
 namespace SidWatchAudioLibrary.Factory
 {
@@ -9,9 +9,9 @@ namespace SidWatchAudioLibrary.Factory
     {
         public static AbstractAudioRecorder GetAudioRecorder(CompletedRecording _completedRecording)
         {
-            string type = Config.GetSettingValue("AudioProvider", "NAudio");
+            string type = Config.GetStringValue("AudioProvider", "NAudio");
 
-            TraceFileHelper.Info(string.Format("Using audio recorder - {0}", type));
+            //TraceHelper.Info(string.Format("Using audio recorder - {0}", type));
 
             switch (type)
             {

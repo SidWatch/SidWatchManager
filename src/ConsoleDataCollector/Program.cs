@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using SidWatchCollectionLibrary.Managers;
-using TreeGecko.Library.Common.Helpers;
+using SidWatch.Collection.Library.Managers;
+using SidWatch.Library.Helpers;
 
 namespace ConsoleDataCollector
 {
@@ -12,7 +12,7 @@ namespace ConsoleDataCollector
 
         static void Main(string[] _args)
         {
-            TraceFileHelper.SetupLogging();
+            TraceHelper.SetupLogging();
             Trace.Listeners.Add(new ConsoleTraceListener());
 
             m_CollectionManager = new CollectionManager();
@@ -32,7 +32,7 @@ namespace ConsoleDataCollector
                 Thread.Sleep(100);
             } while (m_CollectionManager.Running);
            
-            TraceFileHelper.TearDownLogging();
+            TraceHelper.TearDownLogging();
         }
     }
 }

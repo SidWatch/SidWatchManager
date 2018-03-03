@@ -1,7 +1,7 @@
 ﻿using System;
+using SidWatch.Library.Helpers;
 using SidWatchCollectionLibrary.Writers;
 using SidWatchLibrary.Objects;
-using TreeGecko.Library.Common.Helpers;
 
 namespace SidWatch.Collection.Library.Writers
 {
@@ -26,7 +26,7 @@ namespace SidWatch.Collection.Library.Writers
             Station _station,
             string _outputFolder = null)
         {
-            var writerType = Config.GetSettingValue("FileWriter", "HDF5");
+            var writerType = Config.GetStringValue("FileWriter", "HDF5");
             SetOutputFolder(_outputFolder);
             m_Station = _station;
 
@@ -40,7 +40,7 @@ namespace SidWatch.Collection.Library.Writers
         {
             if (_outputFolder == null)
             {
-                m_OutputFolder = Config.GetSettingValue("OutputFolder", @"c:\temp\");
+                m_OutputFolder = Config.GetStringValue("OutputFolder", @"c:\temp\");
             }
             else
             {

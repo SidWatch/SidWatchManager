@@ -85,10 +85,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="tgCommonLibrary, Version=1.0.36.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\SidWatchManager\packages\TreeGeckoLibraries.Common.1.0.36.0\lib\net40\tgCommonLibrary.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -104,7 +100,7 @@
       <Name>SidWatchAudioLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\SidWatchCollectionLibrary\SidWatchCollectionLibrary.csproj">
-      <Project>{760EA571-E1C2-4B86-A44C-0A76914E8CD8}</Project>
+      <Project>{760ea571-e1c2-4b86-a44c-0a76914e8cd8}</Project>
       <Name>SidWatchCollectionLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\SidWatchLibrary\SidWatchLibrary.csproj">

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidWatchCollectionLibrary", "SidWatchCollectionLibrary.csproj", "{760EA571-E1C2-4B86-A44C-0A76914E8CD8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Debug|x64.ActiveCfg = Debug|x64
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Debug|x64.Build.0 = Debug|x64
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|x64.ActiveCfg = Release|x64
+		{760EA571-E1C2-4B86-A44C-0A76914E8CD8}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {79C1ABFC-B877-49BF-AA0A-7B112525D93B}
+	EndGlobalSection
+EndGlobal

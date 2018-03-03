@@ -81,10 +81,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="tgCommonLibrary, Version=1.0.36.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\SidWatchManager\packages\TreeGeckoLibraries.Common.1.0.36.0\lib\net40\tgCommonLibrary.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\HDFHelper.cs" />

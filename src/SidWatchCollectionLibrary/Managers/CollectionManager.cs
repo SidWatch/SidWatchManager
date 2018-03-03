@@ -2,19 +2,17 @@
 using System.IO;
 using System.Threading;
 using Nancy.Hosting.Self;
-using Nancy.ViewEngines.SuperSimpleViewEngine;
-using Newtonsoft.Json;
 using SidWatch.Collection.Library.Writers;
 using SidWatch.Library.Calculation;
+using SidWatch.Library.Helpers;
 using SidWatchAudioLibrary.Factory;
 using SidWatchAudioLibrary.Helpers;
 using SidWatchAudioLibrary.Workers;
+using SidWatchCollectionLibrary;
 using SidWatchCollectionLibrary.Api;
-using SidWatchCollectionLibrary.Writers;
 using SidWatchLibrary.Objects;
-using TreeGecko.Library.Common.Helpers;
 
-namespace SidWatchCollectionLibrary.Managers
+namespace SidWatch.Collection.Library.Managers
 {
     public class CollectionManager
     {
@@ -41,7 +39,7 @@ namespace SidWatchCollectionLibrary.Managers
                 Latitude = 39,
                 Longitude = -104,
                 MonitorId = "101",
-                Timezone = "MDT",
+                Timezone = "MST",
                 UtcOffset = -6
             };
 
@@ -123,10 +121,7 @@ namespace SidWatchCollectionLibrary.Managers
 
             } while (!m_Stop);
 
-            if (m_Writer != null)
-            {
-                m_Writer.Dispose();
-            }
+            m_Writer?.Dispose();
 
             Running = false;
         }
@@ -147,7 +142,7 @@ namespace SidWatchCollectionLibrary.Managers
         public void CompletedRecording(AudioSegment _segment)
         {
             Recording = false;
-            string path = Config.GetSettingValue("OutputPath");
+            string path = Config.GetStringValue("OutputPath");
             string filename = _segment.StartTime.ToString("yyyy-MM-dd_hh-mm-ss-tt") + ".json";
             string pathfilename = Path.Combine(path, filename);
             
@@ -156,9 +151,9 @@ namespace SidWatchCollectionLibrary.Managers
 
             AudioHelper.GetMinMax(_segment.Channel1, out minValue, out maxValue);
 
-            TraceFileHelper.Verbose(string.Format("Found {0} samples for channel1", _segment.Channel1.Length));
-            TraceFileHelper.Verbose(string.Format("Minimum Value Find - {0}", minValue));
-            TraceFileHelper.Verbose(string.Format("Maximum Value Find - {0}", maxValue));
+            TraceHelper.Verbose(string.Format("Found {0} samples for channel1", _segment.Channel1.Length));
+            TraceHelper.Verbose(string.Format("Minimum Value Find - {0}", minValue));
+            TraceHelper.Verbose(string.Format("Maximum Value Find - {0}", maxValue));
 
             _segment.PowerSpectrum = Signal.CalculatePowerSpectralDensity(_segment.Channel1, _segment.SamplesPerSeconds);
             
@@ -166,7 +161,7 @@ namespace SidWatchCollectionLibrary.Managers
             
             m_Writer.WriteAudioSegment(_segment);
 
-            TraceFileHelper.Info(string.Format("Second of audio received ({0})", _segment.StartTime.ToString("O")));
+            TraceHelper.Info(string.Format("Second of audio received ({0})", _segment.StartTime.ToString("O")));
         }
     }
 }

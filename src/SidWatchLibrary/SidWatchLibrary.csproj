@@ -64,6 +64,7 @@
     <Reference Include="MathNet.Numerics">
       <HintPath>..\SidWatchManager\packages\MathNet.Numerics.3.7.0\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Numerics" />
     <Reference Include="AWSSDK">
       <HintPath>..\SidWatchManager\packages\AWSSDK.2.3.40.0\lib\net45\AWSSDK.dll</HintPath>
@@ -74,13 +75,14 @@
     <Reference Include="Nancy.Hosting.Self">
       <HintPath>..\SidWatchManager\packages\Nancy.Hosting.Self.1.2.0\lib\net40\Nancy.Hosting.Self.dll</HintPath>
     </Reference>
-    <Reference Include="tgCommonLibrary, Version=1.0.36.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\SidWatchManager\packages\TreeGeckoLibraries.Common.1.0.36.0\lib\net40\tgCommonLibrary.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\AWSConfig.cs" />
+    <Compile Include="Helpers\Config.cs" />
+    <Compile Include="Helpers\DirectoryHelper.cs" />
+    <Compile Include="Helpers\TraceFileHelper.cs" />
     <Compile Include="Objects\AudioSample.cs" />
+    <Compile Include="Configuration\Config.cs" />
     <Compile Include="Objects\Station.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\PlotModelHelper.cs" />
@@ -88,6 +90,8 @@
     <Compile Include="Objects\PowerDensityReading.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Delegates\CompletedRecording.cs" />
+    <Compile Include="Tracing\AbstractTraceListener.cs" />
+    <Compile Include="Tracing\RollingTraceLogListener.cs" />
     <Compile Include="Workers\PSDWorker.cs" />
     <Compile Include="Workers\AbstractWorker.cs" />
     <Compile Include="Interfaces\IWorker.cs" />

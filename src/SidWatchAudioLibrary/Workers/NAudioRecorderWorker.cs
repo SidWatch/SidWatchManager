@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using SidWatch.Library.Delegates;
+using SidWatch.Library.Helpers;
 using SidWatchLibrary.Objects;
-using TreeGecko.Library.Common.Helpers;
 
 namespace SidWatchAudioLibrary.Workers
 {
@@ -20,7 +19,7 @@ namespace SidWatchAudioLibrary.Workers
             : base(_complete)
 		{
              //Get the desired device
-            string deviceName = Config.GetSettingValue("AudioDeviceName");
+            string deviceName = Config.GetStringValue("AudioDeviceName");
 
             //Get all devices
             var deviceEnum = new MMDeviceEnumerator();
@@ -124,7 +123,7 @@ namespace SidWatchAudioLibrary.Workers
 
 		    int frames = Convert.ToInt32(reader.SampleCount/channels);
 
-		    TraceFileHelper.Verbose(string.Format("Found {0} samples, using {1}", frames, desiredSamples));
+		    TraceHelper.Verbose(string.Format("Found {0} samples, using {1}", frames, desiredSamples));
 
 		    if (frames > desiredSamples)
 		    {
